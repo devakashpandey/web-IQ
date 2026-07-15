@@ -1,6 +1,9 @@
 import Navbar from "@/components/Navbar";
 import InteractiveBuilder from "@/components/InteractiveBuilder";
+import HowItWorks from "@/components/HowItWorks";
 import AtmosphereCards from "@/components/AtmosphereCards";
+import Integrations from "@/components/Integrations";
+import Testimonials from "@/components/Testimonials";
 import PricingSection from "@/components/PricingSection";
 import FaqSection from "@/components/FaqSection";
 import Footer from "@/components/Footer";
@@ -91,13 +94,22 @@ export default function Home() {
         {/* Section 1: Playable AI Terminal sandbox builder */}
         <InteractiveBuilder />
 
-        {/* Section 2: Atmosphere grids and highlights */}
+        {/* Section 2: How It Works interactive timeline */}
+        <HowItWorks />
+
+        {/* Section 3: Atmosphere grids and highlights */}
         <AtmosphereCards />
 
-        {/* Section 3: Pricing Cards & Comparison Table */}
+        {/* Section 4: Ecosystem & Integrations */}
+        <Integrations />
+
+        {/* Section 5: Bento Wall of Love Testimonials */}
+        <Testimonials />
+
+        {/* Section 6: Pricing Cards & Comparison Table */}
         <PricingSection />
 
-        {/* Section 4: Accordion FAQ support */}
+        {/* Section 7: Accordion FAQ support */}
         <FaqSection />
 
         {/* Section 5: Dynamic CTA bottom banner */}
