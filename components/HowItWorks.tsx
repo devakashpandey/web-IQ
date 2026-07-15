@@ -2,14 +2,14 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Sparkles, 
-  Cpu, 
-  Globe, 
-  Play, 
-  Terminal, 
-  Code2, 
-  CheckCircle2, 
+import {
+  Sparkles,
+  Cpu,
+  Globe,
+  Play,
+  Terminal,
+  Code2,
+  CheckCircle2,
   ArrowRight,
   ShieldCheck,
   Zap,
@@ -56,21 +56,32 @@ export default function HowItWorks() {
   const [activeStep, setActiveStep] = useState(1);
   const [progress, setProgress] = useState(0);
 
-  // Auto-progress steps every 12 seconds
+  // Tick progress from 0 to 100 every 6 seconds (60ms * 100)
   useEffect(() => {
-    setProgress(0);
-    const interval = setInterval(() => {
+    const timer = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 100) {
-          setActiveStep((current) => (current % 3) + 1);
-          return 0;
-        }
+        if (prev >= 100) return 100;
         return prev + 1;
       });
-    }, 120);
+    }, 60);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(timer);
   }, [activeStep]);
+
+  // Transition to the next step once progress hits 100%
+  useEffect(() => {
+    if (progress >= 100) {
+      const transitionTimer = setTimeout(() => {
+        setActiveStep((current) => {
+          if (current === 1) return 2;
+          if (current === 2) return 3;
+          return 1;
+        });
+        setProgress(0);
+      }, 300); // 300ms pause at 100% completion before sliding to next step
+      return () => clearTimeout(transitionTimer);
+    }
+  }, [progress]);
 
   const handleStepClick = (stepId: number) => {
     setActiveStep(stepId);
@@ -105,42 +116,38 @@ export default function HowItWorks() {
               <button
                 key={step.id}
                 onClick={() => handleStepClick(step.id)}
-                className={`w-full text-left rounded-2xl p-6 border transition-all duration-300 relative overflow-hidden flex gap-5 select-none focus:outline-none ${
-                  isActive 
-                    ? "bg-[#141414] border-hairline shadow-2xl scale-[1.02]" 
+                className={`w-full text-left rounded-2xl p-6 border transition-all duration-300 relative overflow-hidden flex gap-5 select-none focus:outline-none ${isActive
+                    ? "bg-[#141414] border-hairline shadow-2xl scale-[1.02]"
                     : "bg-transparent border-transparent hover:bg-surface-1/40 hover:border-hairline/40"
-                }`}
+                  }`}
               >
                 {/* Visual Progress Bar on Left Edge */}
                 {isActive && (
                   <div className="absolute left-0 top-0 bottom-0 w-[4px] bg-[#1a1a1a]">
-                    <div 
-                      className={`h-full w-full transition-all ease-linear ${
-                        step.id === 1 ? "bg-accent-blue" : step.id === 2 ? "bg-[#6a4cf5]" : "bg-[#ff7a3d]"
-                      }`}
+                    <div
+                      className={`h-full w-full transition-all ease-linear ${step.id === 1 ? "bg-accent-blue" : step.id === 2 ? "bg-[#6a4cf5]" : "bg-[#ff7a3d]"
+                        }`}
                       style={{ height: `${progress}%` }}
                     />
                   </div>
                 )}
 
                 {/* Step Icon / Number Indicator */}
-                <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border text-sm font-bold transition-all duration-300 font-mono ${
-                  isActive 
-                    ? step.id === 1 
-                      ? "bg-accent-blue/10 border-accent-blue/30 text-accent-blue" 
-                      : step.id === 2 
-                      ? "bg-[#6a4cf5]/10 border-[#6a4cf5]/30 text-[#6a4cf5]"
-                      : "bg-[#ff7a3d]/10 border-[#ff7a3d]/30 text-[#ff7a3d]"
+                <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border text-sm font-bold transition-all duration-300 font-mono ${isActive
+                    ? step.id === 1
+                      ? "bg-accent-blue/10 border-accent-blue/30 text-accent-blue"
+                      : step.id === 2
+                        ? "bg-[#6a4cf5]/10 border-[#6a4cf5]/30 text-[#6a4cf5]"
+                        : "bg-[#ff7a3d]/10 border-[#ff7a3d]/30 text-[#ff7a3d]"
                     : "bg-surface-1 border-hairline text-ink-muted"
-                }`}>
+                  }`}>
                   {step.number}
                 </div>
 
                 {/* Content */}
                 <div className="flex-1">
-                  <h3 className={`font-heading text-lg font-semibold tracking-tight transition-colors duration-300 ${
-                    isActive ? "text-white" : "text-zinc-400 group-hover:text-white"
-                  }`}>
+                  <h3 className={`font-heading text-lg font-semibold tracking-tight transition-colors duration-300 ${isActive ? "text-white" : "text-zinc-400 group-hover:text-white"
+                    }`}>
                     {step.title}
                   </h3>
                   <p className="text-[13.5px] leading-relaxed text-ink-muted mt-2 tracking-[-0.01em]">
@@ -161,11 +168,11 @@ export default function HowItWorks() {
               <span className="h-3 w-3 rounded-full bg-[#1c1c1c] border border-hairline"></span>
               <span className="h-3 w-3 rounded-full bg-[#1c1c1c] border border-hairline"></span>
               <span className="text-[11px] text-ink-muted font-mono ml-4">
-                {activeStep === 1 
-                  ? "webiq.app/sandbox/visual-editor" 
-                  : activeStep === 2 
-                  ? "compiler.webiq.app/ast-sync"
-                  : "console.webiq.app/deployments/logs"}
+                {activeStep === 1
+                  ? "webiq.app/sandbox/visual-editor"
+                  : activeStep === 2
+                    ? "compiler.webiq.app/ast-sync"
+                    : "console.webiq.app/deployments/logs"}
               </span>
             </div>
             <div className="flex items-center gap-1.5 bg-[#090909] border border-hairline px-2 py-0.5 rounded-full">
@@ -203,7 +210,7 @@ function PromptPreview() {
 
     const timer = setInterval(() => {
       if (index < promptTarget.length) {
-        setPromptText((prev) => prev + promptTarget.charAt(index));
+        setPromptText(promptTarget.slice(0, index + 1));
         index++;
       } else {
         clearInterval(timer);
@@ -215,7 +222,7 @@ function PromptPreview() {
   }, []);
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
@@ -246,7 +253,7 @@ function PromptPreview() {
             >
               {/* Subtle top ambient glow */}
               <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-accent-blue/40 to-transparent"></div>
-              
+
               <span className="text-[11px] font-bold text-accent-blue uppercase tracking-widest bg-accent-blue/10 px-2 py-0.5 rounded-full mb-2">
                 webIQ Pro
               </span>
@@ -257,10 +264,10 @@ function PromptPreview() {
 
               {/* Mock Promo Input */}
               <div className="flex gap-2 w-full mt-4 max-w-[280px]">
-                <input 
-                  type="text" 
-                  readOnly 
-                  value="IQ50" 
+                <input
+                  type="text"
+                  readOnly
+                  value="IQ50"
                   className="flex-1 bg-[#090909] border border-hairline text-[11px] px-3 py-1.5 rounded-lg text-emerald-400 font-bold font-mono focus:outline-none"
                 />
                 <button className="bg-white text-black font-bold text-[11.5px] px-3 py-1.5 rounded-lg shrink-0">
@@ -302,7 +309,7 @@ function CompilePreview() {
   }, []);
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
@@ -321,11 +328,11 @@ function CompilePreview() {
         <div className="text-zinc-500">
           <span className="text-zinc-700">01 │</span> import React from &apos;react&apos;;
         </div>
-        
+
         {/* Row showing auto-healing imports */}
         <AnimatePresence>
           {compilingStep !== "error" && (
-            <motion.div 
+            <motion.div
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               className="text-emerald-400 overflow-hidden font-mono"
@@ -338,11 +345,11 @@ function CompilePreview() {
         <div>
           <span className="text-zinc-700">03 │</span> export default function Badge() &#123;
         </div>
-        
+
         {/* Row showing error / healing / success */}
         <div className="flex flex-wrap items-center gap-x-2">
           <span className="text-zinc-700">04 │</span> &nbsp;&nbsp;const [active, setActive] = useState(false);
-          
+
           {compilingStep === "error" && (
             <span className="text-red-400 font-bold bg-red-500/10 px-1.5 py-0.2 rounded text-[10px] animate-pulse">
               error: useState is undefined
@@ -403,7 +410,7 @@ function DeployPreview() {
   }, []);
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
@@ -419,10 +426,10 @@ function DeployPreview() {
           </span>
           <span className="font-mono">{deployPercent}%</span>
         </div>
-        
+
         <div className="w-full h-2.5 bg-[#090909] rounded-full overflow-hidden border border-hairline">
-          <div 
-            className="h-full bg-gradient-to-r from-[#6a4cf5] to-[#ff7a3d] transition-all duration-100 ease-out" 
+          <div
+            className="h-full bg-gradient-to-r from-[#6a4cf5] to-[#ff7a3d] transition-all duration-100 ease-out"
             style={{ width: `${deployPercent}%` }}
           />
         </div>
@@ -442,7 +449,7 @@ function DeployPreview() {
       {/* Edge deployment metrics card */}
       <AnimatePresence>
         {deployPercent === 100 && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             className="grid grid-cols-3 gap-3"
