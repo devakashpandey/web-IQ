@@ -124,7 +124,7 @@ export default function Navbar() {
             >
               <X className="h-5 w-5" />
             </button>
-            <SignIn routing="hash" />
+            <SignIn routing="path" path="/sign-in" />
           </div>
         </div>
       )}
@@ -139,7 +139,7 @@ export default function Navbar() {
             >
               <X className="h-5 w-5" />
             </button>
-            <SignUp routing="hash" />
+            <SignUp routing="path" path="/sign-up" />
           </div>
         </div>
       )}
