@@ -24,55 +24,55 @@ interface Testimonial {
 const TESTIMONIALS: Testimonial[] = [
   {
     id: 1,
-    name: "Sarah Jenkins",
-    handle: "@sarah_devsprint",
+    name: "Aarav Sharma",
+    handle: "@aarav_sharma",
     role: "CTO at DevSprint",
     avatarGradient: "from-[#6a4cf5] to-[#0099ff]",
-    initials: "SJ",
+    initials: "AS",
     quote: "webIQ has completely transformed our prototyping workflow. We went from a Figma mock to a live Next.js sandbox in under 5 minutes. The self-healing compiler resolves imports like magic before we even notice.",
     spanClass: "md:col-span-2",
     accentGlow: "group-hover:border-accent-blue/40 group-hover:shadow-[0_0_30px_rgba(0,153,255,0.15)]"
   },
   {
     id: 2,
-    name: "Marcus Chen",
-    handle: "@marcus_frontend",
+    name: "Rohan Mehta",
+    handle: "@rohan_codes",
     role: "Lead Architect",
     avatarGradient: "from-[#d44df0] to-[#6a4cf5]",
-    initials: "MC",
+    initials: "RM",
     quote: "The dual-sync engine is highly robust. I can edit TypeScript logic directly in the code editor, and the visual canvas syncs instantly without breaking layouts.",
     spanClass: "md:col-span-1",
     accentGlow: "group-hover:border-gradient-violet/40 group-hover:shadow-[0_0_30px_rgba(106,76,245,0.15)]"
   },
   {
     id: 3,
-    name: "Liam O'Connor",
-    handle: "@liam_builds",
+    name: "Kabir Malhotra",
+    handle: "@kabir_builds",
     role: "Indie Creator",
     avatarGradient: "from-[#ff7a3d] to-[#ff5577]",
-    initials: "LO",
+    initials: "KM",
     quote: "I've tried almost every code-generator out there. webIQ is the first tool that outputs clean, componentized React code that I would actually commit to our production main branch.",
     spanClass: "md:col-span-1",
     accentGlow: "group-hover:border-gradient-orange/40 group-hover:shadow-[0_0_30px_rgba(255,122,61,0.15)]"
   },
   {
     id: 4,
-    name: "Elena Rostova",
-    handle: "@elena_design",
+    name: "Ananya Iyer",
+    handle: "@ananya_design",
     role: "UI/UX Engineer",
     avatarGradient: "from-[#0099ff] to-[#d44df0]",
-    initials: "ER",
+    initials: "AI",
     quote: "As a designer who codes, webIQ is the perfect bridge. I can tweak paddings, gaps, and grids visually, and see clean Tailwind CSS utility classes updated in the files. The AST self-healing fixes missing imports instantly.",
     spanClass: "md:col-span-2",
     accentGlow: "group-hover:border-accent-blue/40 group-hover:shadow-[0_0_30px_rgba(0,153,255,0.15)]"
   },
   {
     id: 5,
-    name: "David K.",
-    handle: "@davidk_agency",
+    name: "Devendra Mishra",
+    handle: "@devendra_mishra",
     role: "Agency Founder",
     avatarGradient: "from-[#ff5577] to-[#6a4cf5]",
-    initials: "DK",
+    initials: "DM",
     quote: "Deploying to 85 edge server POPs in under 2 seconds is unbelievable. We demoed a full app setup to a client and deployed it on their domain during the Zoom call.",
     spanClass: "md:col-span-2",
     accentGlow: "group-hover:border-gradient-coral/40 group-hover:shadow-[0_0_30px_rgba(255,85,119,0.15)]"
@@ -120,7 +120,6 @@ export default function Testimonials() {
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between text-ink-muted">
                 <MessageSquare className="h-5 w-5 text-accent-blue/60 group-hover:text-accent-blue transition-colors" />
-                <TwitterIcon className="h-4.5 w-4.5 opacity-30 group-hover:opacity-75 transition-opacity" />
               </div>
               <p className="text-[14.5px] md:text-[15.5px] leading-relaxed text-zinc-300 font-medium tracking-[-0.012em]">
                 &ldquo;{t.quote}&rdquo;

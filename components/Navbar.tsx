@@ -47,18 +47,15 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 w-full pointer-events-none mt-4">
       <div className="mx-auto w-full max-w-[95%] md:max-w-[1000px] pointer-events-auto px-4 sm:px-0">
         <div className="flex items-center justify-between bg-[#141414]/90 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.6)] rounded-full px-6 py-2 h-[52px] backdrop-blur-md">
-          
+
           {/* Logo / Brand */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-surface-2 border border-hairline shadow-inner transition-transform group-hover:scale-105">
-              <Sparkles className="h-4.5 w-4.5 text-accent-blue transition-colors group-hover:text-white" />
-              <div className="absolute inset-0 rounded-lg bg-accent-blue/10 opacity-0 group-hover:opacity-100 transition-opacity blur-[4px]"></div>
-            </div>
+
             <span className="font-geist text-xl font-bold tracking-[-0.04em] text-white">
               web<span className="text-accent-blue">IQ</span>
             </span>
           </Link>
-          
+
           {/* Center Desktop Links */}
           <div className="hidden lg:flex items-center gap-4.5 xl:gap-6">
             {navLinks.map((link) => (
@@ -121,7 +118,7 @@ export default function Navbar() {
       {isSignInOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-md pointer-events-auto" onClick={() => setIsSignInOpen(false)}>
           <div className="relative border border-hairline rounded-2xl bg-canvas p-6 shadow-2xl animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
-            <button 
+            <button
               onClick={() => setIsSignInOpen(false)}
               className="absolute top-4 right-4 text-ink-muted hover:text-white cursor-pointer transition-colors z-10"
             >
@@ -136,7 +133,7 @@ export default function Navbar() {
       {isSignUpOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-md pointer-events-auto" onClick={() => setIsSignUpOpen(false)}>
           <div className="relative border border-hairline rounded-2xl bg-canvas p-6 shadow-2xl animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
-            <button 
+            <button
               onClick={() => setIsSignUpOpen(false)}
               className="absolute top-4 right-4 text-ink-muted hover:text-white cursor-pointer transition-colors z-10"
             >

@@ -465,7 +465,7 @@ export default function InteractiveBuilder() {
         st = ScrollTrigger.create({
           trigger: gridRef.current,
           start: "top 80px", // Pinned grid starts at exactly 80px offset
-          end: "+=2400",     // Height of pinned scroll range
+          end: "+=3600",     // Height of pinned scroll range (increased to make scroll-reveal slower and more premium)
           pin: true,
           pinSpacing: true,
           scrub: true,
