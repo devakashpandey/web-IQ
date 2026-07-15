@@ -33,6 +33,45 @@ export default function Navbar() {
     };
   }, [isSignInOpen, isSignUpOpen]);
 
+  const handleOpenSignIn = () => {
+    setIsSignInOpen(true);
+    if (typeof window !== "undefined") {
+      window.history.pushState({ modal: "signin" }, "", "/sign-in");
+    }
+  };
+
+  const handleCloseSignIn = () => {
+    setIsSignInOpen(false);
+    if (typeof window !== "undefined") {
+      window.history.pushState(null, "", "/");
+    }
+  };
+
+  const handleOpenSignUp = () => {
+    setIsSignUpOpen(true);
+    if (typeof window !== "undefined") {
+      window.history.pushState({ modal: "signup" }, "", "/sign-up");
+    }
+  };
+
+  const handleCloseSignUp = () => {
+    setIsSignUpOpen(false);
+    if (typeof window !== "undefined") {
+      window.history.pushState(null, "", "/");
+    }
+  };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setIsSignInOpen(false);
+      setIsSignUpOpen(false);
+    };
+    if (typeof window !== "undefined") {
+      window.addEventListener("popstate", handlePopState);
+      return () => window.removeEventListener("popstate", handlePopState);
+    }
+  }, []);
+
   const navLinks = [
     { name: "Features", href: "#features" },
     { name: "Workflow", href: "#workflow" },
@@ -73,13 +112,13 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-3">
             <Show when="signed-out">
               <button
-                onClick={() => setIsSignInOpen(true)}
+                onClick={handleOpenSignIn}
                 className="rounded-full bg-surface-1 px-4.5 py-2 font-sans text-[14px] font-semibold text-white border border-hairline transition-all hover:bg-surface-2 hover:border-ink-muted/30 cursor-pointer"
               >
                 Sign in
               </button>
               <button
-                onClick={() => setIsSignUpOpen(true)}
+                onClick={handleOpenSignUp}
                 className="rounded-full bg-white px-4.5 py-2 font-sans text-[14px] font-semibold text-black transition-transform hover:scale-[1.03] active:scale-[0.98] cursor-pointer"
               >
                 Build Free
@@ -94,7 +133,7 @@ export default function Navbar() {
           <div className="flex lg:hidden items-center gap-3">
             <Show when="signed-out">
               <button
-                onClick={() => setIsSignUpOpen(true)}
+                onClick={handleOpenSignUp}
                 className="rounded-full bg-white px-3.5 py-1.5 font-sans text-[13px] font-semibold text-black transition-transform hover:scale-[1.03] cursor-pointer"
               >
                 Build
@@ -116,10 +155,10 @@ export default function Navbar() {
 
       {/* Sign In Modal Overlay */}
       {isSignInOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-md pointer-events-auto" onClick={() => setIsSignInOpen(false)}>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-md pointer-events-auto" onClick={handleCloseSignIn}>
           <div className="relative border border-hairline rounded-2xl bg-canvas p-6 shadow-2xl animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
-            <button
-              onClick={() => setIsSignInOpen(false)}
+            <button 
+              onClick={handleCloseSignIn}
               className="absolute top-4 right-4 text-ink-muted hover:text-white cursor-pointer transition-colors z-10"
             >
               <X className="h-5 w-5" />
@@ -131,10 +170,10 @@ export default function Navbar() {
 
       {/* Sign Up Modal Overlay */}
       {isSignUpOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-md pointer-events-auto" onClick={() => setIsSignUpOpen(false)}>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-md pointer-events-auto" onClick={handleCloseSignUp}>
           <div className="relative border border-hairline rounded-2xl bg-canvas p-6 shadow-2xl animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
-            <button
-              onClick={() => setIsSignUpOpen(false)}
+            <button 
+              onClick={handleCloseSignUp}
               className="absolute top-4 right-4 text-ink-muted hover:text-white cursor-pointer transition-colors z-10"
             >
               <X className="h-5 w-5" />
@@ -165,7 +204,7 @@ export default function Navbar() {
               <button
                 onClick={() => {
                   setIsOpen(false);
-                  setIsSignInOpen(true);
+                  handleOpenSignIn();
                 }}
                 className="w-full flex justify-center items-center rounded-full bg-surface-1 py-3 font-sans text-sm font-semibold text-white border border-hairline transition-all hover:bg-surface-2 cursor-pointer active:scale-[0.98]"
               >
@@ -174,7 +213,7 @@ export default function Navbar() {
               <button
                 onClick={() => {
                   setIsOpen(false);
-                  setIsSignUpOpen(true);
+                  handleOpenSignUp();
                 }}
                 className="w-full flex justify-center items-center rounded-full bg-white py-3 font-sans text-sm font-bold text-black shadow-lg transition-all cursor-pointer active:scale-[0.98]"
               >
