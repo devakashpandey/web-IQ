@@ -18,6 +18,8 @@ export default function SmoothScrollProvider({
       smoothWheel: true,
     });
 
+    (window as any).lenis = lenis;
+
     // Setup requestAnimationFrame loop for Lenis scroll rendering
     let rafId: number;
     function raf(time: number) {
@@ -52,6 +54,7 @@ export default function SmoothScrollProvider({
 
     return () => {
       lenis.destroy();
+      delete (window as any).lenis;
       cancelAnimationFrame(rafId);
       document.removeEventListener("click", handleAnchorClick);
     };

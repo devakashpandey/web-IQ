@@ -78,7 +78,7 @@ export default function HowItWorks() {
   };
 
   return (
-    <section id="demo" className="w-full max-w-[1200px] mx-auto px-6 md:px-8 py-24 border-t border-hairline-soft relative overflow-hidden">
+    <section id="workflow" className="w-full max-w-[1200px] mx-auto px-6 md:px-8 py-24 border-t border-hairline-soft relative overflow-hidden">
       {/* Background ambient decorative glows */}
       <div className="absolute top-[20%] left-[-10%] w-[300px] h-[300px] rounded-full bg-gradient-violet/5 glow-blur pointer-events-none"></div>
       <div className="absolute bottom-[20%] right-[-10%] w-[300px] h-[300px] rounded-full bg-gradient-orange/5 glow-blur pointer-events-none"></div>

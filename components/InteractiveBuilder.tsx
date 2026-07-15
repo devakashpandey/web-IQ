@@ -647,6 +647,19 @@ export default function InteractiveBuilder() {
     if (window.innerWidth < 1024) {
       setActivePromptIdx(idx);
       runMobileTypingFallback(idx);
+      
+      // Scroll to the editor container on mobile/tablet so the user sees the code/canvas update
+      setTimeout(() => {
+        const editorElement = document.querySelector(".lg\\:col-span-8");
+        if (editorElement) {
+          const topOffset = editorElement.getBoundingClientRect().top + window.scrollY - 90;
+          if ((window as any).lenis) {
+            (window as any).lenis.scrollTo(topOffset, { immediate: false });
+          } else {
+            window.scrollTo({ top: topOffset, behavior: "smooth" });
+          }
+        }
+      }, 50);
     } else {
       // On desktop, calculate progress for this card index and scroll to it
       // Prompt 0: 0.0 | Prompt 1: 0.335 | Prompt 2: 0.67
@@ -742,7 +755,7 @@ export default function InteractiveBuilder() {
           </div>
 
           {/* AI Terminal console log */}
-          <div className="flex-1 flex flex-col bg-[#090909] border border-hairline rounded-xl p-4 font-mono text-[11px] leading-relaxed text-zinc-400 select-none min-h-[180px] lg:min-h-[220px]">
+          <div className="flex-1 flex flex-col bg-[#090909] border border-hairline rounded-xl p-4 font-mono text-[11px] leading-relaxed text-zinc-400 select-none min-h-[180px] h-[220px] lg:h-auto">
             <div className="flex items-center justify-between border-b border-hairline pb-2 mb-3">
               <span className="flex items-center gap-1.5 text-[10px] uppercase font-bold text-ink-muted">
                 <Terminal className="h-3.5 w-3.5 text-accent-blue" />
@@ -777,7 +790,7 @@ export default function InteractiveBuilder() {
         </div>
 
         {/* Right Side: IDE Editor + Canvas Sandbox (8 cols) */}
-        <div className="lg:col-span-8 flex flex-col border border-hairline rounded-xl bg-[#090909] shadow-2xl lg:h-full overflow-hidden">
+        <div className="lg:col-span-8 flex flex-col border border-hairline rounded-xl bg-[#090909] shadow-2xl h-[480px] lg:h-full overflow-hidden">
           
           {/* Header Sandbox Bar */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-hairline bg-[#141414]/90 px-4 py-2 gap-2 shrink-0">

@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import '@clerk/ui/themes/shadcn.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -146,4 +147,20 @@
   content: "|";
   animation: blink 1s step-end infinite;
   color: #0099ff;
+}
+
+/* Premium Mobile Menu Slide-In Easing */
+@keyframes menuSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.menu-slide-in {
+  animation: menuSlideIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
