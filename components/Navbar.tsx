@@ -2,16 +2,23 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, Sparkles } from "lucide-react";
-import { SignIn, SignUp, Show, UserButton } from "@clerk/nextjs";
+import { Menu, X, Sparkles, Zap } from "lucide-react";
+import { SignIn, SignUp, Show, UserButton, useUser } from "@clerk/nextjs";
 
 export default function Navbar() {
+  const { user } = useUser();
+  const planName = (user?.publicMetadata?.plan as string) ?? "Pro";
+  const credits = (user?.publicMetadata?.credits as number) ?? 3;
+  const maxCredits = (user?.publicMetadata?.maxCredits as number) ?? 
+    (planName.toLowerCase() === "pro" ? 150 : planName.toLowerCase() === "starter" ? 50 : 40);
+
   const [isOpen, setIsOpen] = useState(false);
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+  const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
 
   useEffect(() => {
-    if (isSignInOpen || isSignUpOpen) {
+    if (isSignInOpen || isSignUpOpen || isCreditsModalOpen) {
       document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
       if (typeof window !== "undefined" && (window as any).lenis) {
@@ -31,7 +38,7 @@ export default function Navbar() {
         (window as any).lenis.start();
       }
     };
-  }, [isSignInOpen, isSignUpOpen]);
+  }, [isSignInOpen, isSignUpOpen, isCreditsModalOpen]);
 
   const handleOpenSignIn = () => {
     setIsSignInOpen(true);
@@ -73,10 +80,8 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: "Features", href: "#features" },
     { name: "Workflow", href: "#workflow" },
     { name: "Demo", href: "#demo" },
-    { name: "Integrations", href: "#integrations" },
     { name: "Testimonials", href: "#testimonials" },
     { name: "Pricing", href: "#pricing" },
     { name: "FAQ", href: "#faq" },
@@ -125,7 +130,16 @@ export default function Navbar() {
               </button>
             </Show>
             <Show when="signed-in">
-              <UserButton />
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setIsCreditsModalOpen(true)}
+                  className="flex items-center gap-1.5 bg-white/[0.05] border border-white/10 rounded-full px-3 py-1.5 font-sans text-[12.5px] font-medium text-zinc-300 select-none cursor-pointer transition-all hover:bg-white/[0.1] active:scale-[0.98]"
+                >
+                  <Zap className="h-3 w-3 text-zinc-300 fill-zinc-300/10" />
+                  <span className="tracking-tight">{credits} / {maxCredits} credits</span>
+                </button>
+                <UserButton />
+              </div>
             </Show>
           </div>
 
@@ -140,7 +154,16 @@ export default function Navbar() {
               </button>
             </Show>
             <Show when="signed-in">
-              <UserButton />
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setIsCreditsModalOpen(true)}
+                  className="flex items-center gap-1 bg-white/[0.05] border border-white/10 rounded-full px-2.5 py-1 font-sans text-[11.5px] font-medium text-zinc-300 select-none cursor-pointer transition-all hover:bg-white/[0.1] active:scale-[0.98]"
+                >
+                  <Zap className="h-2.5 w-2.5 text-zinc-300 fill-zinc-300/10" />
+                  <span className="tracking-tight">{credits} / {maxCredits} credits</span>
+                </button>
+                <UserButton />
+              </div>
             </Show>
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -157,7 +180,7 @@ export default function Navbar() {
       {isSignInOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-md pointer-events-auto" onClick={handleCloseSignIn}>
           <div className="relative border border-hairline rounded-2xl bg-canvas p-6 shadow-2xl animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
-            <button 
+            <button
               onClick={handleCloseSignIn}
               className="absolute top-4 right-4 text-ink-muted hover:text-white cursor-pointer transition-colors z-10"
             >
@@ -172,13 +195,109 @@ export default function Navbar() {
       {isSignUpOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-md pointer-events-auto" onClick={handleCloseSignUp}>
           <div className="relative border border-hairline rounded-2xl bg-canvas p-6 shadow-2xl animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
-            <button 
+            <button
               onClick={handleCloseSignUp}
               className="absolute top-4 right-4 text-ink-muted hover:text-white cursor-pointer transition-colors z-10"
             >
               <X className="h-5 w-5" />
             </button>
             <SignUp routing="path" path="/sign-up" />
+          </div>
+        </div>
+      )}
+
+      {/* Credits & Usage Modal Overlay */}
+      {isCreditsModalOpen && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/80 backdrop-blur-md pointer-events-auto p-4" onClick={() => setIsCreditsModalOpen(false)}>
+          <div className="relative border border-hairline rounded-2xl bg-[#141414] p-6 md:p-8 max-w-md w-full shadow-2xl animate-in zoom-in-95 duration-200 text-white" onClick={(e) => e.stopPropagation()}>
+            {/* Close Button */}
+            <button
+              onClick={() => setIsCreditsModalOpen(false)}
+              className="absolute top-4 right-4 text-ink-muted hover:text-white cursor-pointer transition-colors z-10 p-1 rounded-full hover:bg-surface-2"
+            >
+              <X className="h-4.5 w-4.5" />
+            </button>
+
+            {/* Modal Header */}
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-2">
+                <span className="p-2 rounded-lg bg-accent-blue/10 text-accent-blue">
+                  <Zap className="h-5 w-5 fill-accent-blue/20" />
+                </span>
+                <div>
+                  <h3 className="font-heading text-lg font-bold tracking-tight">Credits & Usage</h3>
+                  <p className="text-[12px] text-ink-muted leading-none mt-1">Monitor your generation limits</p>
+                </div>
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-wider bg-accent-blue/15 text-accent-blue border border-accent-blue/30 px-2.5 py-1 rounded-full">
+                {planName} Plan
+              </span>
+            </div>
+
+            {/* Modal Body */}
+            <div className="space-y-6">
+              {/* Progress Panel */}
+              <div className="bg-[#1c1c1c] border border-hairline p-5 rounded-xl">
+                <div className="flex justify-between items-baseline mb-2">
+                  <span className="text-3xl font-extrabold tracking-tight text-white">{credits}</span>
+                  <span className="text-sm font-semibold text-ink-muted">/ {maxCredits} credits available</span>
+                </div>
+                {/* Glowing Progress Bar */}
+                <div className="w-full h-2 bg-hairline rounded-full overflow-hidden relative">
+                  <div
+                    className="h-full bg-gradient-to-r from-accent-blue to-gradient-violet rounded-full transition-all duration-700 ease-out shadow-[0_0_12px_rgba(0,153,255,0.4)]"
+                    style={{ width: `${Math.min(100, Math.max(0, (credits / maxCredits) * 100))}%` }}
+                  ></div>
+                </div>
+                <p className="text-[11px] text-[#999999] mt-3 leading-normal">
+                  Credits reset automatically at the start of your billing cycle.
+                </p>
+              </div>
+
+              {/* Usage History */}
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#999999] block mb-3">Recent Activity</span>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between py-1.5 border-b border-hairline/40">
+                    <div className="flex flex-col">
+                      <span className="text-xs font-semibold text-white">Visual Compiler Sync</span>
+                      <span className="text-[10px] text-ink-muted">Dual-Sync core update</span>
+                    </div>
+                    <span className="text-xs font-bold text-accent-blue">-1 credit</span>
+                  </div>
+                  <div className="flex items-center justify-between py-1.5 border-b border-hairline/40">
+                    <div className="flex flex-col">
+                      <span className="text-xs font-semibold text-white">Self-healing compilation</span>
+                      <span className="text-[10px] text-ink-muted">AST parser adjustment</span>
+                    </div>
+                    <span className="text-xs font-bold text-accent-blue">-1 credit</span>
+                  </div>
+                  <div className="flex items-center justify-between py-1.5">
+                    <div className="flex flex-col">
+                      <span className="text-xs font-semibold text-white">Deployment Deploy</span>
+                      <span className="text-[10px] text-ink-muted">Edge node bundle upload</span>
+                    </div>
+                    <span className="text-xs font-bold text-accent-blue">-1 credit</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Upgrade CTA */}
+              <button
+                onClick={() => {
+                  setIsCreditsModalOpen(false);
+                  setIsOpen(false);
+                  const element = document.getElementById("pricing");
+                  if (element) {
+                    element.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+                className="w-full py-3 px-4 rounded-full font-bold text-sm text-white bg-gradient-to-r from-accent-blue to-gradient-violet hover:from-accent-blue hover:to-gradient-violet/90 transition-all shadow-[0_0_20px_rgba(0,153,255,0.25)] hover:shadow-[0_0_30px_rgba(0,153,255,0.4)] active:scale-[0.98] cursor-pointer text-center flex items-center justify-center gap-1.5"
+              >
+                <Sparkles className="h-4 w-4 text-white animate-pulse" />
+                Upgrade Plan
+              </button>
+            </div>
           </div>
         </div>
       )}

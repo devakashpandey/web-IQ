@@ -279,3 +279,226 @@
 .animate-float-badge {
   animation: floatBadge 5s ease-in-out infinite;
 }
+
+/* Clerk Pricing Table Custom Overrides for webIQ Dark Theme */
+.cl-pricingTable {
+  gap: 1.5rem !important;
+  width: 100% !important;
+  align-items: stretch !important;
+}
+
+.cl-pricingTableCard {
+  background-color: #141414 !important;
+  border: 1px solid #262626 !important;
+  border-radius: 1.25rem !important;
+  padding: 1.75rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  height: 100% !important;
+  min-height: 480px !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5) !important;
+  position: relative !important;
+}
+
+/* Active / Trial / Currently Subscribed Card Style with Blue Border */
+.cl-pricingTableCard:has(.cl-pricingTableCardFooterNotice),
+.cl-pricingTableCard:has(.cl-badge),
+.cl-pricingTableCard:has(.cl-pricingTableCardBadge),
+.cl-pricingTableCard:has([class*="badge"]),
+.cl-pricingTableCard:has([class*="Badge"]),
+.cl-pricingTableCard:not(:has(.cl-pricingTableCardFooterButton)) {
+  border: 2px solid #0099ff !important;
+  box-shadow: 0 0 35px rgba(0, 153, 255, 0.3), 0 10px 30px -10px rgba(0, 0, 0, 0.8) !important;
+  background-color: #141414 !important;
+}
+
+.cl-pricingTableCard:hover {
+  border-color: rgba(0, 153, 255, 0.6) !important;
+  box-shadow: 0 0 40px rgba(0, 153, 255, 0.25), 0 10px 30px -10px rgba(0, 0, 0, 0.8) !important;
+  transform: translateY(-3px) !important;
+}
+
+.cl-pricingTableCardHeader {
+  padding: 0 0 1rem 0 !important;
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.cl-pricingTableCardTitleContainer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.cl-pricingTableCardTitle {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 1.35rem !important;
+  letter-spacing: -0.02em !important;
+}
+
+.cl-pricingTableCardDescription {
+  color: #999999 !important;
+  font-size: 0.85rem !important;
+  line-height: 1.5 !important;
+  margin-top: 0.25rem !important;
+}
+
+.cl-pricingTableCardFeeContainer {
+  margin-top: 1rem !important;
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 0.35rem !important;
+}
+
+.cl-pricingTableCardFee {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 2.75rem !important;
+  letter-spacing: -0.03em !important;
+}
+
+.cl-pricingTableCardFeePeriod {
+  color: #999999 !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+}
+
+.cl-pricingTableCardFeePeriodNotice {
+  color: #0099ff !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  margin-top: 0.25rem !important;
+}
+
+.cl-pricingTableCardBody {
+  background-color: transparent !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  flex: 1 !important;
+  border: none !important;
+}
+
+.cl-pricingTableCardFeatures {
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin-top: 1rem !important;
+  flex: 1 !important;
+}
+
+.cl-pricingTableCardFeatures:has(.cl-pricingTableCardFeaturesListItem) {
+  border-top: 1px solid #262626 !important;
+  padding-top: 1.25rem !important;
+  margin-top: 1.25rem !important;
+}
+
+.cl-pricingTableCardFeaturesList {
+  background-color: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.75rem !important;
+}
+
+.cl-pricingTableCardFeaturesListItem {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.65rem !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.cl-pricingTableCardFeaturesListItem svg {
+  color: #0099ff !important;
+  stroke: #0099ff !important;
+  width: 1.1rem !important;
+  height: 1.1rem !important;
+  flex-shrink: 0 !important;
+}
+
+.cl-pricingTableCardFeaturesListItemTitle {
+  color: #e4e4e7 !important;
+  font-size: 0.85rem !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
+}
+
+/* Header Badge (ACTIVE / FREE TRIAL) - Positioned at Top Right Corner of Card */
+.cl-pricingTableCardHeader :is(.cl-badge, .cl-pricingTableCardBadge, [class*="badge"], [class*="Badge"], span:not(.cl-pricingTableCardTitle)) {
+  position: absolute !important;
+  top: 1.5rem !important;
+  right: 1.5rem !important;
+  bottom: auto !important;
+  left: auto !important;
+  transform: none !important;
+  width: auto !important;
+  margin: 0 !important;
+  background-color: rgba(0, 153, 255, 0.2) !important;
+  color: #0099ff !important;
+  border: 1px solid rgba(0, 153, 255, 0.45) !important;
+  box-shadow: 0 0 15px rgba(0, 153, 255, 0.3) !important;
+  font-weight: 700 !important;
+  border-radius: 9999px !important;
+  padding: 0.25rem 0.75rem !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  z-index: 100 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.cl-pricingTableCardFooter {
+  margin-top: auto !important;
+  padding: 1.5rem 0 0 0 !important;
+  background-color: transparent !important;
+  border: none !important;
+  width: 100% !important;
+}
+
+/* Bottom Active/Trial Status Notice */
+.cl-pricingTableCardFooterNotice {
+  width: 100% !important;
+  background-color: rgba(0, 153, 255, 0.12) !important;
+  color: #0099ff !important;
+  border: 1px solid rgba(0, 153, 255, 0.3) !important;
+  font-weight: 600 !important;
+  border-radius: 9999px !important;
+  padding: 0.65rem 1rem !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 0.02em !important;
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.cl-pricingTableCardFooterButton {
+  width: 100% !important;
+  background: linear-gradient(135deg, #0099ff 0%, #6a4cf5 100%) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 9999px !important;
+  padding: 0.75rem 1.25rem !important;
+  font-size: 0.875rem !important;
+  border: none !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 0 20px rgba(0, 153, 255, 0.25) !important;
+  cursor: pointer !important;
+  text-align: center !important;
+}
+
+.cl-pricingTableCardFooterButton:hover {
+  background: linear-gradient(135deg, #0088ee 0%, #5a3ce5 100%) !important;
+  box-shadow: 0 0 32px rgba(0, 153, 255, 0.45) !important;
+  transform: scale(1.01) !important;
+}

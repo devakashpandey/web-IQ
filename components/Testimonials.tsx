@@ -14,7 +14,7 @@ interface Testimonial {
   name: string;
   handle: string;
   role: string;
-  avatarGradient: string;
+  avatarBg: string;
   initials: string;
   quote: string;
   spanClass: string;
@@ -27,7 +27,7 @@ const TESTIMONIALS: Testimonial[] = [
     name: "Aarav Sharma",
     handle: "@aarav_sharma",
     role: "CTO at DevSprint",
-    avatarGradient: "from-[#6a4cf5] to-[#0099ff]",
+    avatarBg: "bg-[#1c1f2e] text-[#748ffc]",
     initials: "AS",
     quote: "webIQ has completely transformed our prototyping workflow. We went from a Figma mock to a live Next.js sandbox in under 5 minutes. The self-healing compiler resolves imports like magic before we even notice.",
     spanClass: "md:col-span-2",
@@ -38,7 +38,7 @@ const TESTIMONIALS: Testimonial[] = [
     name: "Rohan Mehta",
     handle: "@rohan_codes",
     role: "Lead Architect",
-    avatarGradient: "from-[#d44df0] to-[#6a4cf5]",
+    avatarBg: "bg-[#172522] text-[#63e6be]",
     initials: "RM",
     quote: "The dual-sync engine is highly robust. I can edit TypeScript logic directly in the code editor, and the visual canvas syncs instantly without breaking layouts.",
     spanClass: "md:col-span-1",
@@ -49,7 +49,7 @@ const TESTIMONIALS: Testimonial[] = [
     name: "Kabir Malhotra",
     handle: "@kabir_builds",
     role: "Indie Creator",
-    avatarGradient: "from-[#ff7a3d] to-[#ff5577]",
+    avatarBg: "bg-[#2b1d16] text-[#ffd8a8]",
     initials: "KM",
     quote: "I've tried almost every code-generator out there. webIQ is the first tool that outputs clean, componentized React code that I would actually commit to our production main branch.",
     spanClass: "md:col-span-1",
@@ -60,7 +60,7 @@ const TESTIMONIALS: Testimonial[] = [
     name: "Ananya Iyer",
     handle: "@ananya_design",
     role: "UI/UX Engineer",
-    avatarGradient: "from-[#0099ff] to-[#d44df0]",
+    avatarBg: "bg-[#142534] text-[#74c0fc]",
     initials: "AI",
     quote: "As a designer who codes, webIQ is the perfect bridge. I can tweak paddings, gaps, and grids visually, and see clean Tailwind CSS utility classes updated in the files. The AST self-healing fixes missing imports instantly.",
     spanClass: "md:col-span-2",
@@ -71,7 +71,7 @@ const TESTIMONIALS: Testimonial[] = [
     name: "Devendra Mishra",
     handle: "@devendra_mishra",
     role: "Agency Founder",
-    avatarGradient: "from-[#ff5577] to-[#6a4cf5]",
+    avatarBg: "bg-[#2a1720] text-[#ffdeeb]",
     initials: "DM",
     quote: "Deploying to 85 edge server POPs in under 2 seconds is unbelievable. We demoed a full app setup to a client and deployed it on their domain during the Zoom call.",
     spanClass: "md:col-span-2",
@@ -82,7 +82,7 @@ const TESTIMONIALS: Testimonial[] = [
     name: "Priya Patel",
     handle: "@priya_codes",
     role: "SaaS Developer",
-    avatarGradient: "from-[#6a4cf5] to-[#ff7a3d]",
+    avatarBg: "bg-[#1f1730] text-[#d0bfff]",
     initials: "PP",
     quote: "Setting up complex dashboard grids and data visualization layouts used to take days. With webIQ, it's a few English prompts and a couple of visual tweaks. Highly recommended.",
     spanClass: "md:col-span-1",
@@ -128,7 +128,7 @@ export default function Testimonials() {
 
             {/* Author Profile */}
             <div className="flex items-center gap-4 mt-8 pt-4 border-t border-hairline/30">
-              <div className={`h-11 w-11 rounded-full bg-gradient-to-tr ${t.avatarGradient} flex items-center justify-center text-white text-[13px] font-bold select-none`}>
+              <div className={`h-11 w-11 rounded-full ${t.avatarBg} flex items-center justify-center text-[13px] font-bold select-none border border-white/5`}>
                 {t.initials}
               </div>
               <div className="flex-1 min-w-0">
