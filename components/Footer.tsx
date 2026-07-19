@@ -54,36 +54,39 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="border-t border-hairline bg-canvas px-6 pt-16 pb-12 md:px-12 md:pt-20">
-      <div className="mx-auto max-w-[1200px]">
+    <footer className="border-t border-white/5 bg-[#0a0a0c] px-6 pt-16 pb-12 md:px-12 md:pt-24 relative overflow-hidden">
+      {/* Background radial glow */}
+      <div className="absolute bottom-0 left-[10%] w-[350px] h-[350px] rounded-full bg-accent-blue/5 glow-blur pointer-events-none"></div>
+
+      <div className="mx-auto max-w-[1200px] relative z-10">
         {/* Main Columns Grid */}
-        <div className="grid grid-cols-2 gap-10 md:grid-cols-5 lg:gap-12">
+        <div className="grid grid-cols-2 gap-10 md:grid-cols-5 lg:gap-12 pb-16 border-b border-white/5">
           {/* Logo & Pitch */}
-          <div className="col-span-2 flex flex-col gap-4">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-surface-2 border border-hairline shadow-inner">
-                <Sparkles className="h-4.5 w-4.5 text-accent-blue" />
+          <div className="col-span-2 flex flex-col gap-5">
+            <Link href="/" className="flex items-center gap-2.5 group">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/[0.04] border border-white/10 shadow-[0_0_15px_rgba(0,153,255,0.15)] group-hover:border-accent-blue/30 transition-colors duration-300">
+                <Sparkles className="h-4.5 w-4.5 text-accent-blue animate-pulse" />
               </div>
-              <span className="font-geist text-xl font-bold tracking-[-0.04em] text-white">
-                web<span className="text-accent-blue">IQ</span>
+              <span className="font-geist text-2xl font-black tracking-[-0.04em] text-white">
+                web<span className="bg-clip-text text-transparent bg-gradient-to-r from-[#00c6ff] to-accent-blue">IQ</span>
               </span>
             </Link>
-            <p className="max-w-[260px] font-sans text-[14px] font-normal leading-relaxed text-ink-muted tracking-[-0.015em]">
+            <p className="max-w-[280px] font-sans text-[13.5px] font-medium leading-relaxed text-zinc-400 tracking-[-0.01em]">
               The agentic canvas that codes and deploys premium React applications from simple prompts.
             </p>
             {/* Social Icons */}
-            <div className="flex items-center gap-3 mt-2">
-              <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-surface-1 text-ink-muted border border-hairline transition-colors hover:bg-surface-2 hover:text-white">
+            <div className="flex items-center gap-3 mt-3">
+              <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-white/[0.03] text-zinc-400 border border-white/10 transition-all duration-300 hover:bg-white/[0.08] hover:text-white hover:border-accent-blue/30 hover:shadow-[0_0_15px_rgba(0,153,255,0.2)]">
                 <TwitterIcon />
               </a>
-              <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-surface-1 text-ink-muted border border-hairline transition-colors hover:bg-surface-2 hover:text-white">
+              <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-white/[0.03] text-zinc-400 border border-white/10 transition-all duration-300 hover:bg-white/[0.08] hover:text-white hover:border-accent-blue/30 hover:shadow-[0_0_15px_rgba(0,153,255,0.2)]">
                 <GithubIcon />
               </a>
-              <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-surface-1 text-ink-muted border border-hairline transition-colors hover:bg-surface-2 hover:text-white">
+              <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-white/[0.03] text-zinc-400 border border-white/10 transition-all duration-300 hover:bg-white/[0.08] hover:text-white hover:border-accent-blue/30 hover:shadow-[0_0_15px_rgba(0,153,255,0.2)]">
                 <LinkedinIcon />
               </a>
-              <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-surface-1 text-ink-muted border border-hairline transition-colors hover:bg-surface-2 hover:text-white">
-                <MessageSquare className="h-4 w-4" />
+              <a href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-white/[0.03] text-zinc-400 border border-white/10 transition-all duration-300 hover:bg-white/[0.08] hover:text-white hover:border-accent-blue/30 hover:shadow-[0_0_15px_rgba(0,153,255,0.2)]">
+                <MessageSquare className="h-4.5 w-4.5" />
               </a>
             </div>
           </div>
@@ -91,21 +94,17 @@ export default function Footer() {
           {/* Links Columns */}
           {footerGroups.map((group) => (
             <div key={group.title} className="flex flex-col gap-4">
-              <h4 className="font-sans text-[13px] font-semibold uppercase tracking-[0.05em] text-white">
+              <h4 className="font-sans text-[11px] font-black uppercase tracking-[0.12em] text-white">
                 {group.title}
               </h4>
-              <ul className="flex flex-col gap-2.5">
+              <ul className="flex flex-col gap-3">
                 {group.links.map((link) => (
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="font-sans text-[13px] font-medium text-ink-muted transition-colors hover:text-white tracking-[-0.01em]"
+                      className="font-sans text-[13.5px] font-bold text-zinc-400 transition-all duration-200 hover:text-white hover:translate-x-0.5 inline-block tracking-tight"
                     >
-                      {group.links[0] === link ? (
-                        <span>{link.name}</span>
-                      ) : (
-                        link.name
-                      )}
+                      {link.name}
                     </Link>
                   </li>
                 ))}
@@ -115,26 +114,26 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-16 flex flex-col gap-6 border-t border-hairline-soft pt-8 md:flex-row md:items-center md:justify-between">
-          <p className="font-sans text-[12px] font-medium text-ink-muted tracking-[-0.01em]">
+        <div className="mt-10 flex flex-col gap-6 pt-2 md:flex-row md:items-center md:justify-between">
+          <p className="font-sans text-[12px] font-semibold text-zinc-400 tracking-tight">
             © {new Date().getFullYear()} webIQ Inc. All rights reserved.
           </p>
           <div className="flex flex-wrap gap-6">
             <Link
               href="#"
-              className="font-sans text-[12px] font-medium text-ink-muted transition-colors hover:text-white"
+              className="font-sans text-[12px] font-bold text-zinc-400 transition-colors hover:text-white"
             >
               Terms of Service
             </Link>
             <Link
               href="#"
-              className="font-sans text-[12px] font-medium text-ink-muted transition-colors hover:text-white"
+              className="font-sans text-[12px] font-bold text-zinc-400 transition-colors hover:text-white"
             >
               Privacy Policy
             </Link>
             <Link
               href="#"
-              className="font-sans text-[12px] font-medium text-ink-muted transition-colors hover:text-white"
+              className="font-sans text-[12px] font-bold text-zinc-400 transition-colors hover:text-white"
             >
               Cookies Settings
             </Link>

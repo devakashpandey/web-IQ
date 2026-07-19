@@ -96,7 +96,8 @@ export default function HowItWorks() {
 
       {/* Section Header */}
       <div className="mb-16 text-center md:text-left">
-        <span className="text-[13px] font-semibold uppercase tracking-[0.2em] text-accent-blue bg-accent-blue/10 px-3 py-1 rounded-full">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-accent-blue/30 bg-accent-blue/10 px-3.5 py-1 font-sans text-[11.5px] font-extrabold uppercase tracking-wider text-accent-blue shadow-[0_0_15px_rgba(0,153,255,0.08)]">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent-blue animate-pulse"></span>
           Workflow
         </span>
         <h2 className="font-heading text-4xl md:text-[62px] font-medium tracking-[-0.05em] text-white mt-4 leading-[1.0] max-w-2xl uppercase">
@@ -117,8 +118,8 @@ export default function HowItWorks() {
                 key={step.id}
                 onClick={() => handleStepClick(step.id)}
                 className={`w-full text-left rounded-2xl p-6 border transition-all duration-300 relative overflow-hidden flex gap-5 select-none focus:outline-none ${isActive
-                    ? "bg-[#141414] border-hairline shadow-2xl scale-[1.02]"
-                    : "bg-transparent border-transparent hover:bg-surface-1/40 hover:border-hairline/40"
+                  ? "bg-[#141414] border-hairline shadow-2xl scale-[1.02]"
+                  : "bg-transparent border-transparent hover:bg-surface-1/40 hover:border-hairline/40"
                   }`}
               >
                 {/* Visual Progress Bar on Left Edge */}
@@ -134,12 +135,12 @@ export default function HowItWorks() {
 
                 {/* Step Icon / Number Indicator */}
                 <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border text-sm font-bold transition-all duration-300 font-mono ${isActive
-                    ? step.id === 1
-                      ? "bg-accent-blue/10 border-accent-blue/30 text-accent-blue"
-                      : step.id === 2
-                        ? "bg-[#6a4cf5]/10 border-[#6a4cf5]/30 text-[#6a4cf5]"
-                        : "bg-[#ff7a3d]/10 border-[#ff7a3d]/30 text-[#ff7a3d]"
-                    : "bg-surface-1 border-hairline text-ink-muted"
+                  ? step.id === 1
+                    ? "bg-accent-blue/10 border-accent-blue/30 text-accent-blue"
+                    : step.id === 2
+                      ? "bg-[#6a4cf5]/10 border-[#6a4cf5]/30 text-[#6a4cf5]"
+                      : "bg-[#ff7a3d]/10 border-[#ff7a3d]/30 text-[#ff7a3d]"
+                  : "bg-surface-1 border-hairline text-ink-muted"
                   }`}>
                   {step.number}
                 </div>

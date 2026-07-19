@@ -28,10 +28,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${inter.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${inter.variable} antialiased`}
       style={{ colorScheme: "dark" }}
     >
-      <body className="min-h-full flex flex-col bg-[#090909] text-white">
+      <body className="bg-[#090909] text-white">
         <ClerkProvider appearance={{ theme: shadcn }}>
           <SmoothScrollProvider>{children}</SmoothScrollProvider>
         </ClerkProvider>

@@ -32,7 +32,8 @@ export default function AtmosphereCards() {
     <div id="features" className="w-full max-w-[1200px] mx-auto px-6 md:px-8 py-20">
       {/* Section Header */}
       <div className="mb-16">
-        <span className="text-[13px] font-semibold uppercase tracking-[0.2em] text-accent-blue">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-accent-blue/30 bg-accent-blue/10 px-3.5 py-1 font-sans text-[11.5px] font-extrabold uppercase tracking-wider text-accent-blue shadow-[0_0_15px_rgba(0,153,255,0.08)]">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent-blue animate-pulse"></span>
           Architecture
         </span>
         <h2 className="font-heading text-4xl md:text-[62px] font-medium tracking-[-0.05em] text-white mt-4 leading-[1.0] max-w-2xl">

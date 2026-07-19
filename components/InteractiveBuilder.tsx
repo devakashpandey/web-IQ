@@ -3,13 +3,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { 
-  Terminal, 
-  Code2, 
-  Play, 
-  Sparkles, 
-  CheckCircle2, 
-  Cpu, 
+import {
+  Terminal,
+  Code2,
+  Play,
+  Sparkles,
+  CheckCircle2,
+  Cpu,
   ArrowRight,
   ThumbsUp,
   Plus,
@@ -224,9 +224,9 @@ function FeedbackBoardPreview() {
   const [newTitle, setNewTitle] = useState("");
 
   const handleVote = (id: number) => {
-    setItems(items.map(item => 
+    setItems(items.map(item =>
       item.id === id ? { ...item, votes: item.votes + 1 } : item
-    ).sort((a,b) => b.votes - a.votes));
+    ).sort((a, b) => b.votes - a.votes));
   };
 
   const handleAdd = (e: React.FormEvent) => {
@@ -244,7 +244,7 @@ function FeedbackBoardPreview() {
   return (
     <div className="w-full max-w-sm rounded-xl border border-hairline bg-[#141414] p-5 shadow-2xl">
       <h3 className="text-[15px] font-bold text-white mb-3 tracking-tight">Community Feedback</h3>
-      
+
       <form onSubmit={handleAdd} className="flex gap-2 mb-4">
         <input
           type="text"
@@ -263,13 +263,12 @@ function FeedbackBoardPreview() {
           <div key={item.id} className="flex items-center justify-between bg-[#1c1c1c] border border-hairline rounded-lg p-3 transition-colors hover:border-hairline-soft/80">
             <div className="flex flex-col gap-1 pr-3">
               <span className="text-[13px] font-medium text-white leading-tight tracking-tight">{item.title}</span>
-              <span className={`text-[10px] w-fit font-bold rounded px-1.5 py-0.5 ${
-                item.tag === "Bug" ? "bg-red-500/10 text-red-400" : "bg-accent-blue/10 text-accent-blue"
-              }`}>
+              <span className={`text-[10px] w-fit font-bold rounded px-1.5 py-0.5 ${item.tag === "Bug" ? "bg-red-500/10 text-red-400" : "bg-accent-blue/10 text-accent-blue"
+                }`}>
                 {item.tag}
               </span>
             </div>
-            <button 
+            <button
               onClick={() => handleVote(item.id)}
               className="flex items-center gap-1.5 bg-[#090909] border border-hairline hover:border-accent-blue hover:text-accent-blue transition-all rounded px-2.5 py-1 text-ink-muted text-[11px]"
             >
@@ -348,13 +347,13 @@ function CheckoutCardPreview() {
   const [applied, setApplied] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  
+
   const basePrice = 29;
 
   const handleApply = (e: React.FormEvent) => {
     e.preventDefault();
     if (!coupon.trim()) return;
-    
+
     setLoading(true);
     setError("");
 
@@ -373,7 +372,7 @@ function CheckoutCardPreview() {
     <div className="w-full max-w-sm rounded-xl border border-hairline bg-[#141414] p-5 shadow-2xl text-center">
       <h3 className="text-lg font-bold text-white tracking-tight">webIQ Pro</h3>
       <p className="text-[13px] text-ink-muted mb-4 mt-0.5">Scale your development with agentic builders</p>
-      
+
       <div className="bg-[#090909] border border-hairline rounded-xl p-4 mb-4 flex flex-col justify-center items-center">
         <div className="flex items-baseline justify-center gap-1.5">
           {applied ? (
@@ -409,8 +408,8 @@ function CheckoutCardPreview() {
             placeholder="Promo code (try 'IQ50')"
             className="flex-1 bg-[#090909] text-white border border-hairline rounded-lg px-3 py-1.5 text-[12px] uppercase tracking-wider placeholder-ink-muted focus:outline-none focus:border-accent-blue/50"
           />
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={loading}
             className="bg-surface-2 border border-hairline text-white hover:bg-surface-1 rounded-lg px-3 py-1.5 text-[12px] font-semibold transition-colors disabled:opacity-50"
           >
@@ -471,7 +470,7 @@ export default function InteractiveBuilder() {
           scrub: true,
           onUpdate: (self) => {
             const progress = self.progress;
-            
+
             // Determine active prompt and phase
             let promptIdx = 0;
             let phase: "code" | "preview" = "code";
@@ -525,7 +524,7 @@ export default function InteractiveBuilder() {
               const charsToShow = Math.floor(fullCode.length * localProgress);
               const nextCode = fullCode.slice(0, charsToShow);
               setDisplayedCode((prev) => (prev !== nextCode ? nextCode : prev));
-              
+
               // Set progressive terminal logs
               const logs = [
                 `[AI Agent] Orchestrating files for request: "${PROMPTS[promptIdx].promptText}"`,
@@ -597,12 +596,12 @@ export default function InteractiveBuilder() {
     if (typingTimer.current) {
       clearInterval(typingTimer.current);
     }
-    
+
     setIsTyping(true);
     setIsDeploying(false);
     setActiveTab("code");
     setDisplayedCode("");
-    
+
     const fullCode = PROMPTS[promptIdx].codeSnippet;
     setTerminalLogs([
       `[AI Agent] Orchestrating files for request: "${PROMPTS[promptIdx].promptText}"`,
@@ -647,7 +646,7 @@ export default function InteractiveBuilder() {
     if (window.innerWidth < 1024) {
       setActivePromptIdx(idx);
       runMobileTypingFallback(idx);
-      
+
       // Scroll to the editor container on mobile/tablet so the user sees the code/canvas update
       setTimeout(() => {
         const editorElement = document.querySelector(".lg\\:col-span-8");
@@ -668,7 +667,7 @@ export default function InteractiveBuilder() {
         const scrollStart = stRef.current.start;
         const scrollEnd = stRef.current.end;
         const targetScroll = scrollStart + (scrollEnd - scrollStart) * progress;
-        
+
         activePromptIdxRef.current = idx;
         activeTabRef.current = "code";
         setActivePromptIdx(idx);
@@ -710,7 +709,8 @@ export default function InteractiveBuilder() {
     <div ref={containerRef} id="demo" className="w-full max-w-[1200px] mx-auto px-6 md:px-8 mt-12 mb-24">
       {/* Section Header */}
       <div className="text-center mb-16">
-        <span className="text-[13px] font-semibold uppercase tracking-[0.2em] text-accent-blue bg-accent-blue/10 px-3 py-1 rounded-full">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-accent-blue/30 bg-accent-blue/10 px-3.5 py-1 font-sans text-[11.5px] font-extrabold uppercase tracking-wider text-accent-blue shadow-[0_0_15px_rgba(0,153,255,0.08)]">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent-blue animate-pulse"></span>
           The Playground
         </span>
         <h2 className="font-heading text-4xl md:text-5xl font-medium tracking-[-0.04em] text-white mt-4 mb-4">
@@ -722,7 +722,7 @@ export default function InteractiveBuilder() {
       </div>
 
       <div ref={gridRef} className="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-surface-1/30 border border-hairline rounded-2xl p-4 md:p-6 overflow-hidden lg:h-[600px]">
-        
+
         {/* Left Side: Prompts & AI Agent Logs (4 cols) */}
         <div className="lg:col-span-4 flex flex-col gap-6 lg:h-full justify-between">
           <div className="flex flex-col gap-2">
@@ -734,11 +734,10 @@ export default function InteractiveBuilder() {
                 <button
                   key={prompt.id}
                   onClick={() => handlePromptClick(idx)}
-                  className={`relative overflow-hidden flex flex-col items-start text-left p-3.5 pl-6 rounded-xl border transition-all ${
-                    activePromptIdx === idx
-                      ? "bg-surface-2 border-accent-blue/30 shadow-lg scale-[1.01]"
-                      : "bg-[#090909]/45 border-hairline hover:border-hairline-soft hover:bg-surface-1"
-                  }`}
+                  className={`relative overflow-hidden flex flex-col items-start text-left p-3.5 pl-6 rounded-xl border transition-all ${activePromptIdx === idx
+                    ? "bg-surface-2 border-accent-blue/30 shadow-lg scale-[1.01]"
+                    : "bg-[#090909]/45 border-hairline hover:border-hairline-soft hover:bg-surface-1"
+                    }`}
                 >
                   {activePromptIdx === idx && (
                     <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-accent-blue animate-pulse"></div>
@@ -763,7 +762,7 @@ export default function InteractiveBuilder() {
               </span>
               <span className="h-2 w-2 rounded-full bg-accent-blue animate-pulse"></span>
             </div>
-            
+
             <div className="flex flex-col gap-2 overflow-y-auto max-h-[200px] flex-1 pr-1 font-mono">
               {terminalLogs.map((log, idx) => (
                 <div key={idx} className="flex gap-1.5">
@@ -791,30 +790,28 @@ export default function InteractiveBuilder() {
 
         {/* Right Side: IDE Editor + Canvas Sandbox (8 cols) */}
         <div className="lg:col-span-8 flex flex-col border border-hairline rounded-xl bg-[#090909] shadow-2xl h-[480px] lg:h-full overflow-hidden">
-          
+
           {/* Header Sandbox Bar */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-hairline bg-[#141414]/90 px-4 py-2 gap-2 shrink-0">
-            
+
             {/* Tabs */}
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setActiveTab("preview")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[13px] font-semibold transition-all ${
-                  activeTab === "preview"
-                    ? "bg-[#090909] text-white border border-hairline"
-                    : "text-ink-muted hover:text-white"
-                }`}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[13px] font-semibold transition-all ${activeTab === "preview"
+                  ? "bg-[#090909] text-white border border-hairline"
+                  : "text-ink-muted hover:text-white"
+                  }`}
               >
                 <Play className="h-3.5 w-3.5 text-accent-blue" />
                 Live Canvas
               </button>
               <button
                 onClick={() => setActiveTab("code")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[13px] font-semibold transition-all ${
-                  activeTab === "code"
-                    ? "bg-[#090909] text-white border border-hairline"
-                    : "text-ink-muted hover:text-white"
-                }`}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[13px] font-semibold transition-all ${activeTab === "code"
+                  ? "bg-[#090909] text-white border border-hairline"
+                  : "text-ink-muted hover:text-white"
+                  }`}
               >
                 <Code2 className="h-3.5 w-3.5 text-zinc-400" />
                 Code Editor
@@ -830,13 +827,13 @@ export default function InteractiveBuilder() {
 
           {/* IDE Content */}
           <div className="flex-1 relative flex flex-col overflow-hidden bg-[#090909]">
-            
+
             {/* 1. Preview Canvas rendering */}
             {activeTab === "preview" && (
               <div className="flex-1 flex items-center justify-center p-6 md:p-10 grid-bg relative overflow-y-auto h-full">
                 {/* Accent glows */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full bg-accent-blue/5 blur-[70px] pointer-events-none"></div>
-                
+
                 <div className="w-full flex items-center justify-center animate-in fade-in zoom-in-95 duration-300">
                   {activePromptIdx === 0 && <FeedbackBoardPreview />}
                   {activePromptIdx === 1 && <DashboardPreview />}

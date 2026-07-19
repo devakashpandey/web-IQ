@@ -100,7 +100,6 @@
 
 @layer base {
   html {
-    scroll-behavior: smooth;
     scroll-padding-top: 90px;
     /* Offset for the floating fixed navbar */
   }

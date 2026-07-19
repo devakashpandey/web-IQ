@@ -37,7 +37,8 @@ export default function FaqSection() {
     <div id="faq" className="w-full max-w-[800px] mx-auto px-6 md:px-8 py-20 border-t border-hairline-soft">
       {/* Section Header */}
       <div className="text-center mb-12">
-        <span className="text-[13px] font-semibold uppercase tracking-[0.2em] text-accent-blue bg-accent-blue/10 px-3 py-1 rounded-full">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-accent-blue/30 bg-accent-blue/10 px-3.5 py-1 font-sans text-[11.5px] font-extrabold uppercase tracking-wider text-accent-blue shadow-[0_0_15px_rgba(0,153,255,0.08)]">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent-blue animate-pulse"></span>
           Support
         </span>
         <h2 className="font-heading text-4xl md:text-5xl font-medium tracking-[-0.04em] text-white mt-4 mb-4">

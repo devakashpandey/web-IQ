@@ -37,8 +37,8 @@ export default function Home() {
 
         {/* Floating 3D Developer & Coding Elements with Parallax Effect */}
         {/* Top Right Floating Code Block - Canvas UI Component themed */}
-        <div 
-          style={{ transform: `translateY(${scrollY * 0.3}px)` }} 
+        <div
+          style={{ transform: `translateY(${scrollY * 0.3}px)` }}
           className="hidden lg:block absolute top-[18%] right-[3%] lg:right-[5%] z-20 transition-transform duration-75 ease-out"
         >
           <div className="w-[240px] bg-[#141414]/60 backdrop-blur-xl border border-white/10 rounded-xl p-4 shadow-[0_25px_60px_rgba(0,0,0,0.7)] animate-float-1 select-none pointer-events-none transform [transform-style:preserve-3d] [perspective:1000px]">
@@ -57,8 +57,8 @@ export default function Home() {
         </div>
 
         {/* Top Left Floating Code Block - Theme Config themed */}
-        <div 
-          style={{ transform: `translateY(${scrollY * -0.22}px)` }} 
+        <div
+          style={{ transform: `translateY(${scrollY * -0.22}px)` }}
           className="hidden lg:block absolute top-[52%] left-[3%] lg:left-[5%] z-20 transition-transform duration-75 ease-out"
         >
           <div className="w-[240px] bg-[#141414]/60 backdrop-blur-xl border border-white/10 rounded-xl p-4 shadow-[0_25px_60px_rgba(0,0,0,0.7)] animate-float-2 select-none pointer-events-none transform [transform-style:preserve-3d] [perspective:1000px]">
@@ -87,10 +87,10 @@ export default function Home() {
             webIQ Sandbox v1.0
           </div>
 
-          {/* Aggressive poster-like display headline */}
-          <h1 className="font-heading text-4xl sm:text-6xl md:text-[85px] lg:text-[105px] font-medium tracking-[-0.05em] leading-[0.95] md:leading-[0.85] text-white text-center max-w-5xl uppercase select-none">
+          {/* Aggressive poster-like display headline with Font Black */}
+          <h1 className="font-heading text-4xl sm:text-6xl md:text-[85px] lg:text-[105px] font-bold tracking-[-0.05em] leading-[0.95] md:leading-[0.82] text-white text-center max-w-5xl uppercase select-none">
             A visual canvas <br className="hidden md:inline" />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-blue via-violet-400 to-[#d44df0] drop-shadow-[0_2px_20px_rgba(106,76,245,0.15)]">that actually</span> codes.
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#00c6ff] via-accent-blue to-[#6a4cf5] drop-shadow-[0_2px_20px_rgba(0,153,255,0.25)]">that actually</span> codes.
           </h1>
 
           {/* Detailed, premium description */}
@@ -123,7 +123,7 @@ export default function Home() {
               <span className="h-2.5 w-2.5 rounded-full bg-[#27c93f] border border-emerald-500/20"></span>
               <span className="text-[11px] text-zinc-300 font-mono ml-4">webiq.app/project/dashboard-core</span>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div className="bg-[#101010] border border-zinc-700/80 hover:border-zinc-600 rounded-xl p-4 flex flex-col gap-2 transition-all">
                 <span className="text-[10px] uppercase font-bold text-zinc-300 flex items-center gap-1.5 select-none">
@@ -180,31 +180,40 @@ export default function Home() {
         {/* Section 7: Accordion FAQ support */}
         <FaqSection />
 
-        {/* Section 5: Dynamic CTA bottom banner */}
-        <section className="w-full max-w-[1200px] mx-auto px-6 md:px-8 py-20 text-center relative overflow-hidden border-t border-hairline-soft">
-          {/* Back glows */}
-          <div className="absolute bottom-0 right-0 w-[400px] h-[300px] rounded-full bg-gradient-orange/5 glow-blur pointer-events-none"></div>
+        {/* Section 5: Dynamic CTA bottom banner - Redesigned as a premium bento card */}
+        <section className="w-full max-w-[1100px] mx-auto px-6 md:px-8 mt-12 mb-24 relative">
+          <div className="w-full bg-[#0a0a0c]/50 border border-white/10 rounded-[2.25rem] p-12 md:p-20 shadow-[0_30px_70px_rgba(0,0,0,0.85)] overflow-hidden relative flex flex-col items-center text-center">
+            {/* Grid background matching hero */}
+            <div className="absolute inset-0 grid-bg opacity-[0.15] pointer-events-none"></div>
 
-          <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
-            <h2 className="font-heading text-4xl md:text-[62px] font-medium tracking-[-0.04em] text-white leading-tight uppercase">
-              Start Building <br /> With webIQ Today
-            </h2>
-            <p className="max-w-md mx-auto text-ink-muted text-sm md:text-base leading-relaxed tracking-[-0.015em] mt-4 mb-8">
-              Experience the power of design-to-code dual sync. Spin up your first autonomous sandbox in seconds.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-              <a
-                href="#demo"
-                className="w-full sm:w-auto rounded-full bg-white px-8 py-3.5 font-sans text-sm font-bold text-black shadow-lg transition-transform hover:scale-[1.03]"
-              >
-                Get Started Free
-              </a>
-              <a
-                href="#"
-                className="w-full sm:w-auto rounded-full bg-surface-1 border border-hairline hover:bg-surface-2 text-white px-8 py-3.5 font-sans text-sm font-bold transition-all"
-              >
-                Talk to Sales
-              </a>
+            <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
+              {/* Premium sub-badge */}
+              <div className="inline-flex items-center gap-1.5 rounded-full border border-[#0099ff]/20 bg-[#0099ff]/5 px-3 py-1 font-sans text-[11px] font-extrabold text-[#0099ff] uppercase tracking-wider mb-6 shadow-sm">
+                <Sparkles className="h-3.5 w-3.5" />
+                Dual-Sync Engine
+              </div>
+
+              <h2 className="font-heading text-4xl md:text-[54px] font-bold tracking-[-0.05em] text-white leading-tight uppercase select-none">
+                Start Building <br className="hidden sm:inline" /> With <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#00c6ff] via-accent-blue to-[#6a4cf5]">webIQ</span> Today
+              </h2>
+              <p className="max-w-md mx-auto text-zinc-400 font-medium text-sm md:text-base leading-relaxed tracking-[-0.015em] mt-5 mb-10">
+                Experience the power of design-to-code dual sync. Spin up your first autonomous sandbox in seconds.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+                <a
+                  href="#demo"
+                  className="group w-full sm:w-auto flex items-center justify-center gap-2 rounded-full bg-white px-8 py-4 font-sans text-sm font-extrabold text-black shadow-[0_4px_25px_rgba(255,255,255,0.15)] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] hover:shadow-[0_4px_35px_rgba(255,255,255,0.3)] cursor-pointer"
+                >
+                  Get Started Free
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 duration-200" />
+                </a>
+                <a
+                  href="#"
+                  className="w-full sm:w-auto flex items-center justify-center rounded-full bg-white/[0.02] backdrop-blur-md border border-white/10 hover:border-white/25 hover:bg-white/[0.04] text-white px-8 py-4 font-sans text-sm font-extrabold transition-all duration-300 active:scale-[0.98] cursor-pointer"
+                >
+                  Talk to Sales
+                </a>
+              </div>
             </div>
           </div>
         </section>
