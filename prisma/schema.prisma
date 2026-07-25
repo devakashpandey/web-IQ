@@ -11,3 +11,56 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+// prisma schema for make 2 tables in database
+
+model User {
+  id        String   @id @default(cuid()) // generate random id 
+  clerkId   String   @unique // clerk id
+  name      String   @default("") // name of user
+  email     String   @unique // email id of user
+  imgUrl    String   @default("") // image url of user
+  plan      String   @default("free") // plan of user
+  credits   Int      @default(10) // credit of user
+  createdAt DateTime @default(now()) // date when user was created
+  updatedAt DateTime @updatedAt // date when user was updated
+
+  workspaces Workspace[] // one user can have many workspaces
+}
+
+model Workspace {
+  id       String  @id @default(cuid()) // generate random id
+  title    String?
+  userId   String // user id 
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages Json    @default("[]")
+  fileData Json?
+
+  createdAt DateTime @default(now()) // date when user was created
+  updatedAt DateTime @updatedAt // date when user was updated 
+
+  @@index([userId]) // to find the workspace via userId
+}
+
+//           User
+// +-----------------------+
+// | id                    |
+// | clerkId               |
+// | name                  |
+// | email                 |
+// | credits               |
+// +-----------------------+
+//            |
+//            | 1
+//            |
+//            |
+//            | *
+// +-----------------------+
+// | Workspace             |
+// +-----------------------+
+// | id                    |
+// | title                 |
+// | userId (FK) ----------+
+// | messages              |
+// | fileData              |
+// +-----------------------+
