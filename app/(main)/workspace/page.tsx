@@ -1,0 +1,553 @@
+"use client";
+
+import { useSearchParams } from "next/navigation";
+import { Suspense, useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { UserButton, useUser } from "@clerk/nextjs";
+import { getOrCreateUserAction } from "@/actions/user";
+import { PLANS } from "@/lib/constants";
+import PlanModal from "@/components/PlanModal";
+import {
+  Terminal,
+  Code2,
+  Cpu,
+  ArrowLeft,
+  Sparkles,
+  Zap,
+  Play,
+  RotateCcw,
+  ExternalLink,
+  ChevronRight,
+  Maximize2,
+  Paperclip,
+  Send,
+  Image as ImageIcon,
+  X,
+  Eye,
+  Wand2,
+  Download,
+  Loader2,
+  Bot,
+  User as UserIcon
+} from "lucide-react";
+
+interface Message {
+  id: string;
+  sender: "user" | "ai";
+  text: string;
+  image?: string;
+  timestamp: string;
+}
+
+function WorkspaceContent() {
+  const searchParams = useSearchParams();
+  const initialPrompt = searchParams.get("prompt") || "A Spotify stats dashboard with charts";
+
+  // Auth & User State
+  const { isSignedIn, isLoaded } = useUser();
+  const [dbUser, setDbUser] = useState<{ credits: number; plan: string } | null>(null);
+  const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      getOrCreateUserAction().then((u) => {
+        if (u) setDbUser(u);
+      });
+    }
+  }, [isLoaded, isSignedIn]);
+
+  const maxCredits = dbUser ? (PLANS[dbUser.plan as keyof typeof PLANS]?.credits || 10) : 10;
+
+  // Workspace View & Execution State
+  const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
+  const [generationLogs, setGenerationLogs] = useState<string[]>([]);
+  const [isCompiling, setIsCompiling] = useState(true);
+  const [showLogs, setShowLogs] = useState(false);
+
+  // Chat State
+  const [chatMessages, setChatMessages] = useState<Message[]>([]);
+  const [inputMessage, setInputMessage] = useState("");
+  const [attachedImage, setAttachedImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
+  // Initial prompt setup
+  useEffect(() => {
+    const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    setChatMessages([
+      {
+        id: "msg-1",
+        sender: "ai",
+        text: `Hello! I'm your webIQ AI Agent. I have initialized the workspace for your prompt:\n\n"${initialPrompt}"\n\nYou can refine the code, ask for new components, or upload design mockups.`,
+        timestamp: timeStr,
+      },
+    ]);
+
+    runCompilationSimulation(initialPrompt);
+  }, [initialPrompt]);
+
+  const runCompilationSimulation = (promptText: string) => {
+    const logs = [
+      "Initializing agentic sandbox environment...",
+      "Analyzing request parameters...",
+      `Parsing AST prompt: "${promptText.slice(0, 35)}..."`,
+      "Creating component structure and layout tree...",
+      "Injecting TailwindCSS variables...",
+      "Compilation Successful! 0 errors."
+    ];
+
+    setGenerationLogs([]);
+    setIsCompiling(true);
+
+    let currentLogIndex = 0;
+    const interval = setInterval(() => {
+      if (currentLogIndex < logs.length) {
+        setGenerationLogs((prev) => [...prev, logs[currentLogIndex]]);
+        currentLogIndex++;
+      } else {
+        setIsCompiling(false);
+        clearInterval(interval);
+      }
+    }, 500);
+  };
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatMessages, isCompiling]);
+
+  const handleSendMessage = () => {
+    if (!inputMessage.trim() && !attachedImage) return;
+
+    const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const userMsgText = inputMessage.trim();
+
+    const userMsg: Message = {
+      id: `msg-${Date.now()}`,
+      sender: "user",
+      text: userMsgText,
+      image: attachedImage || undefined,
+      timestamp: timeStr,
+    };
+
+    setChatMessages((prev) => [...prev, userMsg]);
+    setInputMessage("");
+    setAttachedImage(null);
+
+    // Trigger AI response simulation
+    setTimeout(() => {
+      const aiMsg: Message = {
+        id: `msg-${Date.now() + 1}`,
+        sender: "ai",
+        text: `Updating webIQ sandbox with your new instruction... Re-compiling component tree.`,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      };
+      setChatMessages((prev) => [...prev, aiMsg]);
+      runCompilationSimulation(userMsgText || "Updated layout");
+    }, 600);
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setAttachedImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDownloadCode = () => {
+    const codeContent = `import React, { useState } from 'react';
+import { Sparkles, Terminal } from 'lucide-react';
+
+// Auto-generated by webIQ AI Builder for: "${initialPrompt}"
+export default function ActiveWidget() {
+  const [isActive, setIsActive] = useState(true);
+
+  return (
+    <div className="w-full max-w-md rounded-xl border border-white/10 bg-[#141416] p-6 shadow-2xl">
+      <h3 className="text-lg font-bold text-white">${initialPrompt}</h3>
+      <p className="text-xs text-zinc-400 mt-2">Dynamic layout generated by webIQ AI.</p>
+    </div>
+  );
+}`;
+
+    const blob = new Blob([codeContent], { type: "text/typescript" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "ActiveWidget.tsx";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#09090b] text-white font-sans flex flex-col justify-between overflow-hidden">
+      {/* Header matching Navbar style */}
+      <header className="h-14 border-b border-white/10 bg-[#141416]/80 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between z-20">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <Link
+            href="/"
+            className="p-1.5 rounded-lg border border-white/5 bg-white/[0.02] hover:bg-white/[0.08] transition-all text-zinc-400 hover:text-white"
+            title="Back to Home"
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </Link>
+          <div className="h-4 w-px bg-white/10 hidden sm:block"></div>
+          <span className="font-geist text-lg font-bold tracking-tight flex items-center gap-1.5">
+            web<span className="text-accent-blue">IQ</span>
+            <span className="text-xs text-zinc-400 font-normal">Workspace</span>
+          </span>
+          <span className="hidden md:inline-flex text-[10px] font-bold uppercase tracking-wider bg-accent-blue/10 border border-accent-blue/20 text-accent-blue px-2.5 py-0.5 rounded-full">
+            Sandbox Active
+          </span>
+        </div>
+
+        {/* Right Header CTAs & User Credits */}
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <button
+            onClick={() => runCompilationSimulation(initialPrompt)}
+            className="hidden sm:flex items-center gap-1.5 bg-[#1a1a1e] border border-white/10 hover:border-white/20 rounded-full px-3 py-1.5 font-sans text-xs font-semibold text-zinc-300 transition-all active:scale-[0.98] cursor-pointer"
+          >
+            <RotateCcw className="h-3.5 w-3.5" /> Reset Sandbox
+          </button>
+
+          {/* Dynamic Credits Badge */}
+          <button
+            onClick={() => setIsCreditsModalOpen(true)}
+            className="flex items-center gap-1.5 bg-white/[0.05] border border-white/10 rounded-full px-3 py-1.5 font-sans text-[12px] font-medium text-zinc-300 select-none cursor-pointer transition-all hover:bg-white/[0.1] active:scale-[0.98]"
+          >
+            <Zap className="h-3.5 w-3.5 text-zinc-300 fill-zinc-300/10" />
+            <span className="tracking-tight flex items-center gap-1.5">
+              {dbUser ? (
+                `${dbUser.credits} / ${maxCredits} credits`
+              ) : (
+                <>
+                  <Loader2 className="h-3 w-3 animate-spin text-accent-blue" />
+                  <span className="text-[11px] text-zinc-500">loading...</span>
+                </>
+              )}
+            </span>
+          </button>
+
+          {/* User Button */}
+          <UserButton />
+        </div>
+      </header>
+
+      {/* Main Workspace Layout */}
+      <main className="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-hidden h-[calc(100vh-56px)]">
+        
+        {/* Left Column: ChatGPT / Gemini Style Chat Panel */}
+        <div className="lg:col-span-4 border-r border-white/10 bg-[#0c0c0e] flex flex-col justify-between overflow-hidden">
+          
+          {/* Chat Panel Header */}
+          <div className="h-11 border-b border-white/10 px-4 flex items-center justify-between bg-[#121214] shrink-0">
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-accent-blue animate-pulse" />
+              <span className="text-xs font-bold text-white tracking-tight">AI Builder Chat</span>
+            </div>
+            <button
+              onClick={() => setShowLogs(!showLogs)}
+              className={`text-[11px] font-semibold px-2.5 py-1 rounded-full border transition-all flex items-center gap-1 cursor-pointer ${
+                showLogs
+                  ? "bg-accent-blue/20 text-accent-blue border-accent-blue/30"
+                  : "bg-white/5 text-zinc-400 border-white/10 hover:text-white"
+              }`}
+            >
+              <Terminal className="h-3 w-3" />
+              {showLogs ? "Hide Compiler Logs" : "View Logs"}
+            </button>
+          </div>
+
+          {/* Compiler Logs Overlay (Togglable) */}
+          {showLogs && (
+            <div className="bg-[#090909] border-b border-white/10 p-3 font-mono text-[11px] leading-relaxed text-zinc-400 max-h-[160px] overflow-y-auto space-y-1.5">
+              {generationLogs.map((log, index) => (
+                <div key={index} className="flex items-start gap-1.5">
+                  <ChevronRight className="h-3 w-3 text-accent-blue shrink-0 mt-0.5" />
+                  <span>{log}</span>
+                </div>
+              ))}
+              {isCompiling && (
+                <div className="flex items-center gap-2 text-accent-blue mt-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent-blue animate-ping"></span>
+                  <span>AI Agent compiling AST...</span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Chat Feed */}
+          <div className="flex-1 p-4 overflow-y-auto space-y-4 font-sans text-xs">
+            {chatMessages.map((msg) => (
+              <div
+                key={msg.id}
+                className={`flex gap-3 ${
+                  msg.sender === "user" ? "justify-end" : "justify-start"
+                }`}
+              >
+                {msg.sender === "ai" && (
+                  <div className="h-7 w-7 rounded-full bg-accent-blue/15 border border-accent-blue/30 flex items-center justify-center text-accent-blue shrink-0">
+                    <Bot className="h-4 w-4" />
+                  </div>
+                )}
+
+                <div
+                  className={`max-w-[85%] rounded-2xl p-3.5 shadow-lg leading-relaxed ${
+                    msg.sender === "user"
+                      ? "bg-accent-blue text-white rounded-br-none"
+                      : "bg-[#161619] border border-white/10 text-zinc-200 rounded-bl-none"
+                  }`}
+                >
+                  {msg.image && (
+                    <div className="mb-2.5 rounded-lg overflow-hidden border border-white/10 max-h-48">
+                      <img src={msg.image} alt="Uploaded attachment" className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                  <p className="whitespace-pre-wrap text-[12.5px]">{msg.text}</p>
+                  <span className="text-[10px] text-zinc-400 block text-right mt-1.5 opacity-70">
+                    {msg.timestamp}
+                  </span>
+                </div>
+
+                {msg.sender === "user" && (
+                  <div className="h-7 w-7 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white shrink-0">
+                    <UserIcon className="h-4 w-4" />
+                  </div>
+                )}
+              </div>
+            ))}
+            <div ref={chatEndRef} />
+          </div>
+
+          {/* Input Panel (ChatGPT/Gemini Style) */}
+          <div className="p-3 border-t border-white/10 bg-[#121214] shrink-0">
+            {/* Attached Image Preview Chip */}
+            {attachedImage && (
+              <div className="mb-2 relative inline-block">
+                <img src={attachedImage} alt="Preview" className="h-14 w-14 object-cover rounded-lg border border-accent-blue/50" />
+                <button
+                  onClick={() => setAttachedImage(null)}
+                  className="absolute -top-1.5 -right-1.5 bg-black text-white rounded-full p-0.5 border border-white/20 hover:bg-red-600 transition-all cursor-pointer"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </div>
+            )}
+
+            <div className="bg-[#18181c] border border-white/10 focus-within:border-accent-blue/40 rounded-xl p-2.5 transition-all flex flex-col justify-between gap-2 shadow-inner">
+              <textarea
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }
+                }}
+                placeholder="Ask webIQ Agent to edit layout, add features, or upload an image..."
+                className="w-full bg-transparent text-white text-xs placeholder-zinc-500 focus:outline-none resize-none min-h-[44px] max-h-[100px] leading-relaxed"
+                rows={2}
+              />
+
+              <div className="flex items-center justify-between pt-1 border-t border-white/5">
+                <div className="flex items-center gap-1.5">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleImageUpload}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    type="button"
+                    className="p-1.5 text-zinc-400 hover:text-white rounded-lg hover:bg-white/5 transition-all cursor-pointer"
+                    title="Attach Image / Mockup"
+                  >
+                    <Paperclip className="h-4 w-4" />
+                  </button>
+                </div>
+
+                <button
+                  onClick={handleSendMessage}
+                  disabled={!inputMessage.trim() && !attachedImage}
+                  className="h-7 w-7 rounded-full bg-white text-black hover:bg-zinc-200 disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center justify-center cursor-pointer shadow-md"
+                >
+                  <Send className="h-3.5 w-3.5 fill-black" />
+                </button>
+              </div>
+            </div>
+            <p className="text-[10px] text-zinc-500 text-center mt-2">
+              webIQ Agent can make mistakes. Verify component code outputs.
+            </p>
+          </div>
+        </div>
+
+        {/* Right Column: Code/Preview Viewer + Top Toolbar Strip */}
+        <div className="lg:col-span-8 flex flex-col bg-[#09090b]">
+          
+          {/* Horizontal Toolbar Strip (Matches screenshot) */}
+          <div className="h-12 border-b border-white/10 px-4 sm:px-6 flex items-center justify-between bg-[#141416]/60 backdrop-blur-md shrink-0">
+            {/* Left side actions: Code vs Preview toggles */}
+            <div className="flex items-center gap-1 bg-[#0d0d0f] border border-white/10 rounded-lg p-1">
+              <button
+                onClick={() => setActiveTab("code")}
+                className={`flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-md transition-all cursor-pointer ${
+                  activeTab === "code"
+                    ? "bg-white text-black shadow-sm"
+                    : "text-zinc-400 hover:text-white"
+                }`}
+              >
+                <Code2 className="h-3.5 w-3.5" />
+                Code
+              </button>
+              <button
+                onClick={() => setActiveTab("preview")}
+                className={`flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-md transition-all cursor-pointer ${
+                  activeTab === "preview"
+                    ? "bg-white text-black shadow-sm"
+                    : "text-zinc-400 hover:text-white"
+                }`}
+              >
+                <Eye className="h-3.5 w-3.5" />
+                Preview
+              </button>
+            </div>
+
+            {/* Right side actions: Improve & Download */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              <button
+                onClick={() => {
+                  runCompilationSimulation("Agent Optimization");
+                }}
+                className="flex items-center gap-1.5 bg-gradient-to-r from-accent-blue/15 to-gradient-violet/15 border border-accent-blue/30 text-accent-blue hover:border-accent-blue/50 rounded-lg px-3 py-1.5 font-sans text-xs font-bold transition-all active:scale-[0.98] cursor-pointer"
+              >
+                <Wand2 className="h-3.5 w-3.5" />
+                Improve with Agent (Pro)
+              </button>
+              <button
+                onClick={handleDownloadCode}
+                className="flex items-center gap-1.5 bg-white/[0.05] border border-white/10 hover:border-white/20 text-white rounded-lg px-3.5 py-1.5 font-sans text-xs font-bold transition-all active:scale-[0.98] cursor-pointer"
+              >
+                <Download className="h-3.5 w-3.5" />
+                Download
+              </button>
+            </div>
+          </div>
+
+          {/* Main Viewer Canvas Area */}
+          <div className="flex-1 p-4 sm:p-6 flex items-center justify-center relative overflow-hidden bg-[#09090b]">
+            {activeTab === "preview" ? (
+              <div className="w-full h-full max-w-[900px] max-h-[550px] border border-white/10 rounded-2xl bg-[#141416] shadow-[0_25px_60px_rgba(0,0,0,0.85)] relative flex flex-col justify-between overflow-hidden">
+                {/* Mock Window Controls */}
+                <div className="flex items-center justify-between border-b border-white/5 px-4 py-3 bg-[#0d0d0f]">
+                  <div className="flex gap-1.5">
+                    <span className="h-2.5 w-2.5 rounded-full bg-red-500/30 border border-red-500/20"></span>
+                    <span className="h-2.5 w-2.5 rounded-full bg-yellow-500/30 border border-yellow-500/20"></span>
+                    <span className="h-2.5 w-2.5 rounded-full bg-green-500/30 border border-green-500/20"></span>
+                  </div>
+                  <span className="text-[10px] text-zinc-500 font-mono">webiq.app/project/active-canvas</span>
+                  <div className="flex items-center gap-1.5">
+                    <button className="text-zinc-400 hover:text-white p-1">
+                      <ExternalLink className="h-3 w-3" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex-1 flex flex-col items-center justify-center text-center p-8 bg-[#09090b]/60">
+                  {isCompiling ? (
+                    <div className="flex flex-col items-center gap-4">
+                      <Loader2 className="h-8 w-8 animate-spin text-accent-blue" />
+                      <div>
+                        <h4 className="text-sm font-bold text-white">Compiling AST Canvas</h4>
+                        <p className="text-xs text-zinc-500 mt-1">Generating custom layout and rendering code...</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-4 max-w-md">
+                      <div className="inline-flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/35 text-emerald-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm">
+                        Live Preview Active
+                      </div>
+                      <h3 className="text-2xl font-extrabold text-white tracking-tight">
+                        {initialPrompt}
+                      </h3>
+                      <p className="text-xs text-zinc-400 leading-relaxed">
+                        Your application layout has been built and rendered cleanly. Use the left chat panel to request additions or click "Download" to save the component.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="w-full h-full max-w-[900px] max-h-[550px] border border-white/10 rounded-2xl bg-[#09090b] shadow-[0_25px_60px_rgba(0,0,0,0.85)] relative flex flex-col justify-between overflow-hidden">
+                <div className="flex items-center justify-between border-b border-white/5 px-4 py-3 bg-[#0d0d0f]">
+                  <span className="text-[11px] text-zinc-400 font-mono">components/ActiveWidget.tsx</span>
+                  <button
+                    onClick={handleDownloadCode}
+                    className="text-[11px] font-bold text-accent-blue bg-accent-blue/10 border border-accent-blue/20 px-2.5 py-1 rounded hover:bg-accent-blue/20 transition-all cursor-pointer"
+                  >
+                    Copy Code
+                  </button>
+                </div>
+                <div className="flex-1 p-6 font-mono text-[12px] leading-relaxed text-emerald-400 overflow-y-auto bg-[#0a0a0c]">
+                  <pre>
+                    {`import React, { useState } from 'react';
+import { Sparkles, Terminal } from 'lucide-react';
+
+// Auto-generated by webIQ AI Builder for: "${initialPrompt}"
+export default function ActiveWidget() {
+  const [isActive, setIsActive] = useState(true);
+
+  return (
+    <div className="w-full max-w-md rounded-xl border border-white/10 bg-[#141416] p-6 shadow-2xl">
+      <h3 className="text-lg font-bold text-white">${initialPrompt}</h3>
+      <p className="text-xs text-zinc-400 mt-2">Dynamic layout generated by webIQ AI.</p>
+    </div>
+  );
+}`}
+                  </pre>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </main>
+
+      {/* Plan Modal */}
+      {dbUser && (
+        <PlanModal
+          isOpen={isCreditsModalOpen}
+          onClose={() => setIsCreditsModalOpen(false)}
+          credits={dbUser.credits}
+          maxCredits={maxCredits}
+          planName={dbUser.plan}
+          onUpgradeClick={() => {
+            setIsCreditsModalOpen(false);
+            window.location.href = "/#pricing";
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+// Next.js 15+ search parameters need to be wrapped in a Suspense boundary
+export default function WorkspacePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#09090b] text-white flex flex-col items-center justify-center gap-3">
+          <Loader2 className="h-8 w-8 animate-spin text-accent-blue" />
+          <span className="text-xs text-zinc-500 font-medium">Entering Workspace...</span>
+        </div>
+      }
+    >
+      <WorkspaceContent />
+    </Suspense>
+  );
+}

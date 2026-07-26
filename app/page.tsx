@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import InteractiveBuilder from "@/components/InteractiveBuilder";
 import HowItWorks from "@/components/HowItWorks";
 import AtmosphereCards from "@/components/AtmosphereCards";
-import Integrations from "@/components/Integrations";
 import Testimonials from "@/components/Testimonials";
 import PricingSection from "@/components/PricingSection";
 import FaqSection from "@/components/FaqSection";
@@ -13,7 +13,30 @@ import Footer from "@/components/Footer";
 import { Sparkles, Terminal, Code2, Cpu, ArrowRight } from "lucide-react";
 
 export default function Home() {
+  const router = useRouter();
   const [scrollY, setScrollY] = useState(0);
+  const [prompt, setPrompt] = useState("");
+
+  const suggestions = [
+    "A Spotify stats dashboard with charts",
+    "A kanban board with drag and drop",
+    "A weather app with animated icons",
+    "A personal finance tracker",
+    "A recipe finder with filters",
+    "A pomodoro timer with tasks"
+  ];
+
+  const handleGenerate = () => {
+    if (!prompt.trim()) return;
+    router.push(`/workspace?prompt=${encodeURIComponent(prompt.trim())}`);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleGenerate();
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -98,21 +121,41 @@ export default function Home() {
             Create, iterate, and deploy full-stack React applications in a collaborative, agent-orchestrated canvas. Your visual designs convert to production-ready Next.js and Tailwind code instantly.
           </p>
 
-          {/* Hero CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
-            <a
-              href="#demo"
-              className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 font-sans text-[14px] font-bold text-black shadow-[0_4px_20px_rgba(255,255,255,0.15)] transition-transform hover:scale-[1.03] active:scale-[0.98]"
-            >
-              Open Sandbox
-              <ArrowRight className="h-4 w-4" />
-            </a>
-            <a
-              href="#features"
-              className="w-full sm:w-auto flex items-center justify-center rounded-full bg-[#141414]/40 backdrop-blur-md border border-white/10 hover:border-white/20 text-white px-8 py-3.5 font-sans text-[14px] font-bold transition-all hover:bg-white/[0.04] active:scale-[0.98]"
-            >
-              Explore Features
-            </a>
+          {/* Hero Prompt Box & Suggestions */}
+          <div className="w-full max-w-[720px] bg-[#141416]/90 border border-white/10 rounded-2xl p-4 shadow-[0_30px_70px_rgba(0,0,0,0.85)] relative flex flex-col justify-between min-h-[130px] focus-within:border-accent-blue/40 focus-within:shadow-[0_0_30px_rgba(0,153,255,0.1)] transition-all duration-300">
+            <textarea
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="A Spotify stats dashboard with charts"
+              className="w-full bg-transparent text-white text-base md:text-lg font-medium placeholder-zinc-500 focus:outline-none resize-none min-h-[50px] leading-relaxed"
+              rows={2}
+            />
+            <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/5">
+              <span className="text-[11px] text-zinc-500 font-sans tracking-tight">
+                Press ↵ to generate · Shift+↵ for new line
+              </span>
+              <button
+                onClick={handleGenerate}
+                disabled={!prompt.trim()}
+                className="rounded-full bg-white px-5 py-2 font-sans text-xs font-bold text-black shadow-lg hover:bg-zinc-200 transition-all select-none active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none cursor-pointer flex items-center justify-center"
+              >
+                Generate
+              </button>
+            </div>
+          </div>
+
+          {/* Suggestions */}
+          <div className="flex flex-wrap items-center justify-center gap-2 max-w-[800px] mt-6">
+            {suggestions.map((s, idx) => (
+              <button
+                key={idx}
+                onClick={() => setPrompt(s)}
+                className="text-xs font-medium text-zinc-400 bg-white/[0.02] border border-white/5 rounded-full px-4 py-2 hover:bg-white/[0.08] hover:border-white/15 hover:text-white cursor-pointer transition-all duration-200 select-none"
+              >
+                {s}
+              </button>
+            ))}
           </div>
 
           {/* Miniature visual UI mock floating above sandbox */}
@@ -167,9 +210,6 @@ export default function Home() {
 
         {/* Section 3: Atmosphere grids and highlights */}
         <AtmosphereCards />
-
-        {/* Section 4: Ecosystem & Integrations */}
-        <Integrations />
 
         {/* Section 5: Bento Wall of Love Testimonials */}
         <Testimonials />
