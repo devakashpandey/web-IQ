@@ -1,19 +1,13 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Sparkles,
-  Cpu,
-  Globe,
-  Play,
   Terminal,
   Code2,
   CheckCircle2,
-  ArrowRight,
   ShieldCheck,
-  Zap,
-  Server
+  Zap
 } from "lucide-react";
 
 interface Step {
@@ -206,9 +200,6 @@ function PromptPreview() {
 
   useEffect(() => {
     let index = 0;
-    setPromptText("");
-    setIsDoneTyping(false);
-
     const timer = setInterval(() => {
       if (index < promptTarget.length) {
         setPromptText(promptTarget.slice(0, index + 1));
@@ -396,7 +387,6 @@ function DeployPreview() {
   const [deployPercent, setDeployPercent] = useState(0);
 
   useEffect(() => {
-    setDeployPercent(0);
     const interval = setInterval(() => {
       setDeployPercent((prev) => {
         if (prev >= 100) {

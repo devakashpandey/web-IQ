@@ -8,9 +8,7 @@ import {
   Code2,
   Play,
   Sparkles,
-  CheckCircle2,
   Cpu,
-  ArrowRight,
   ThumbsUp,
   Plus,
   TrendingUp,
@@ -445,7 +443,7 @@ export default function InteractiveBuilder() {
   const typingTimer = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
-  const stRef = useRef<any>(null);
+  const stRef = useRef<ScrollTrigger | null>(null);
 
   // Cache refs to prevent duplicate React state updates on every scroll pixel
   const activePromptIdxRef = useRef(0);
@@ -457,7 +455,7 @@ export default function InteractiveBuilder() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    let st: any = null;
+    let st: ScrollTrigger | null = null;
 
     const initScrollTrigger = () => {
       if (window.innerWidth >= 1024 && gridRef.current) {
@@ -652,8 +650,10 @@ export default function InteractiveBuilder() {
         const editorElement = document.querySelector(".lg\\:col-span-8");
         if (editorElement) {
           const topOffset = editorElement.getBoundingClientRect().top + window.scrollY - 90;
-          if ((window as any).lenis) {
-            (window as any).lenis.scrollTo(topOffset, { immediate: false });
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const lenis = (window as any).lenis;
+          if (lenis?.scrollTo) {
+            lenis.scrollTo(topOffset, { immediate: false });
           } else {
             window.scrollTo({ top: topOffset, behavior: "smooth" });
           }
@@ -684,23 +684,26 @@ export default function InteractiveBuilder() {
   };
 
   useEffect(() => {
-    if (window.innerWidth < 1024) {
-      runMobileTypingFallback(0);
-    } else {
-      // On desktop, initialize with prompt 0 fully loaded on preview tab
-      setDisplayedCode(PROMPTS[0].codeSnippet);
-      setActiveTab("preview");
-      setTerminalLogs([
-        `[AI Agent] Orchestrating files for request: "${PROMPTS[0].promptText}"`,
-        `[AI Agent] Initializing workspace inside sandbox container...`,
-        `[AST Compiler] Extracting code structure. Analyzing React imports...`,
-        `[Tailwind JIT] Compiling utilities. Applying styling tree...`,
-        `[Self-Healer] Checking AST rules. 0 typescript warnings.`,
-        `[Deployer] Live sandbox synced to: https://${PROMPTS[0].previewUrl}`
-      ]);
-    }
+    const initTimer = setTimeout(() => {
+      if (window.innerWidth < 1024) {
+        runMobileTypingFallback(0);
+      } else {
+        // On desktop, initialize with prompt 0 fully loaded on preview tab
+        setDisplayedCode(PROMPTS[0].codeSnippet);
+        setActiveTab("preview");
+        setTerminalLogs([
+          `[AI Agent] Orchestrating files for request: "${PROMPTS[0].promptText}"`,
+          `[AI Agent] Initializing workspace inside sandbox container...`,
+          `[AST Compiler] Extracting code structure. Analyzing React imports...`,
+          `[Tailwind JIT] Compiling utilities. Applying styling tree...`,
+          `[Self-Healer] Checking AST rules. 0 typescript warnings.`,
+          `[Deployer] Live sandbox synced to: https://${PROMPTS[0].previewUrl}`
+        ]);
+      }
+    }, 0);
 
     return () => {
+      clearTimeout(initTimer);
       if (typingTimer.current) clearInterval(typingTimer.current);
     };
   }, []);

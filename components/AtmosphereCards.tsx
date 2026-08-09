@@ -2,15 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { 
-  Sparkles, 
   Cpu, 
   Globe, 
   RefreshCw, 
   GitBranch, 
   Code,
   ShieldCheck,
-  Zap,
-  Gauge
+  Zap
 } from "lucide-react";
 
 export default function AtmosphereCards() {

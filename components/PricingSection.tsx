@@ -1,71 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
-import { Check, Sparkles, Loader2 } from "lucide-react";
+import React from "react";
+import { Loader2 } from "lucide-react";
 import { PricingTable, ClerkLoading, ClerkLoaded } from "@clerk/nextjs";
 
-interface Tier {
-  name: string;
-  desc: string;
-  priceMonthly: number;
-  priceAnnually: number;
-  features: string[];
-  cta: string;
-  featured: boolean;
-}
-
 export default function PricingSection() {
-  const [billingCycle, setBillingCycle] = useState<"monthly" | "annually">("annually");
-
-  const tiers: Tier[] = [
-    {
-      name: "Starter",
-      desc: "For hobbyists and individual creators exploring AI site building.",
-      priceMonthly: 0,
-      priceAnnually: 0,
-      features: [
-        "1 active project sandbox",
-        "Visual canvas editor",
-        "Standard AST code compilation",
-        "Deploy to webiq.app domain",
-        "Community support"
-      ],
-      cta: "Start for Free",
-      featured: false
-    },
-    {
-      name: "Pro",
-      desc: "For professional developers who need rapid visual-code iterations.",
-      priceMonthly: 29,
-      priceAnnually: 24,
-      features: [
-        "Unlimited active project sandboxes",
-        "Dual-Sync Visual-Code core",
-        "Autonomous Self-healing compilers",
-        "Custom domains + Free SSL",
-        "Prioritized edge hosting (85+ pops)",
-        "Priority Discord & email support"
-      ],
-      cta: "Upgrade to Pro",
-      featured: true
-    },
-    {
-      name: "Enterprise",
-      desc: "For agencies and teams requiring advanced security and automation.",
-      priceMonthly: 149,
-      priceAnnually: 119,
-      features: [
-        "Everything in Pro",
-        "Shared team workspaces & sandboxes",
-        "Custom LLM API keys integration",
-        "Deploy to AWS/Vercel/custom clouds",
-        "Dedicated compiler orchestration pipelines",
-        "SLA 99.99% uptime guarantee"
-      ],
-      cta: "Contact Sales",
-      featured: false
-    }
-  ];
 
 
   return (

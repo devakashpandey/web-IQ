@@ -7,6 +7,7 @@ async function testClerk() {
     
     // 2. Fetch User Billing subscriptions
     console.log("Fetching Clerk User Billing Subscriptions...");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const subscription = await (client as any).billing.getUserBillingSubscription(userId);
     if (subscription && subscription.subscriptionItems && subscription.subscriptionItems[0]) {
       const item = subscription.subscriptionItems[0];
@@ -15,9 +16,10 @@ async function testClerk() {
     } else {
       console.log("No active subscription found.");
     }
-  } catch (error: any) {
+  } catch (error) {
     console.error("General error in testClerk:", error);
   }
 }
 
 testClerk();
+

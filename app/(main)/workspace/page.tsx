@@ -10,18 +10,14 @@ import PlanModal from "@/components/PlanModal";
 import {
   Terminal,
   Code2,
-  Cpu,
   ArrowLeft,
   Sparkles,
   Zap,
-  Play,
   RotateCcw,
   ExternalLink,
   ChevronRight,
-  Maximize2,
   Paperclip,
   Send,
-  Image as ImageIcon,
   X,
   Eye,
   Wand2,
@@ -71,21 +67,6 @@ function WorkspaceContent() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // Initial prompt setup
-  useEffect(() => {
-    const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    setChatMessages([
-      {
-        id: "msg-1",
-        sender: "ai",
-        text: `Hello! I'm your webIQ AI Agent. I have initialized the workspace for your prompt:\n\n"${initialPrompt}"\n\nYou can refine the code, ask for new components, or upload design mockups.`,
-        timestamp: timeStr,
-      },
-    ]);
-
-    runCompilationSimulation(initialPrompt);
-  }, [initialPrompt]);
-
   const runCompilationSimulation = (promptText: string) => {
     const logs = [
       "Initializing agentic sandbox environment...",
@@ -110,6 +91,25 @@ function WorkspaceContent() {
       }
     }, 500);
   };
+
+  // Initial prompt setup
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      setChatMessages([
+        {
+          id: "msg-1",
+          sender: "ai",
+          text: `Hello! I'm your webIQ AI Agent. I have initialized the workspace for your prompt:\n\n"${initialPrompt}"\n\nYou can refine the code, ask for new components, or upload design mockups.`,
+          timestamp: timeStr,
+        },
+      ]);
+
+      runCompilationSimulation(initialPrompt);
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, [initialPrompt]);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -305,6 +305,7 @@ export default function ActiveWidget() {
                 >
                   {msg.image && (
                     <div className="mb-2.5 rounded-lg overflow-hidden border border-white/10 max-h-48">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={msg.image} alt="Uploaded attachment" className="w-full h-full object-cover" />
                     </div>
                   )}
@@ -329,6 +330,7 @@ export default function ActiveWidget() {
             {/* Attached Image Preview Chip */}
             {attachedImage && (
               <div className="mb-2 relative inline-block">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={attachedImage} alt="Preview" className="h-14 w-14 object-cover rounded-lg border border-accent-blue/50" />
                 <button
                   onClick={() => setAttachedImage(null)}
@@ -477,7 +479,7 @@ export default function ActiveWidget() {
                         {initialPrompt}
                       </h3>
                       <p className="text-xs text-zinc-400 leading-relaxed">
-                        Your application layout has been built and rendered cleanly. Use the left chat panel to request additions or click "Download" to save the component.
+                        Your application layout has been built and rendered cleanly. Use the left chat panel to request additions or click &quot;Download&quot; to save the component.
                       </p>
                     </div>
                   )}

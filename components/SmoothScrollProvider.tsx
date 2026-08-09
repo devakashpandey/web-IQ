@@ -18,6 +18,7 @@ export default function SmoothScrollProvider({
       smoothWheel: true,
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).lenis = lenis;
 
     // Setup requestAnimationFrame loop for Lenis scroll rendering
@@ -54,6 +55,7 @@ export default function SmoothScrollProvider({
 
     return () => {
       lenis.destroy();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       delete (window as any).lenis;
       cancelAnimationFrame(rafId);
       document.removeEventListener("click", handleAnchorClick);

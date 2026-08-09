@@ -70,9 +70,9 @@ export default function Home() {
               <span className="text-[10px] font-mono text-zinc-400">ButtonComponent.tsx</span>
             </div>
             <div className="font-mono text-[10.5px] leading-relaxed text-zinc-300 flex flex-col gap-0.5">
-              <div><span className="text-sky-400 font-mono">import</span> &#123; Button &#125; <span className="text-sky-400 font-mono">from</span> <span className="text-emerald-400 font-mono">"@/ui"</span>;</div>
-              <div className="mt-1"><span className="text-zinc-500 font-mono">// Visual Canvas Node</span></div>
-              <div>&lt;<span className="text-accent-blue font-mono">Button</span> <span className="text-amber-400 font-mono">variant</span>=<span className="text-emerald-400 font-mono">"premium"</span>&gt;</div>
+              <div><span className="text-sky-400 font-mono">import</span> &#123; Button &#125; <span className="text-sky-400 font-mono">from</span> <span className="text-emerald-400 font-mono">&quot;@/ui&quot;</span>;</div>
+              <div className="mt-1"><span className="text-zinc-500 font-mono">&#47;&#47; Visual Canvas Node</span></div>
+              <div>&lt;<span className="text-accent-blue font-mono">Button</span> <span className="text-amber-400 font-mono">variant</span>=<span className="text-emerald-400 font-mono">&quot;premium&quot;</span>&gt;</div>
               <div>&nbsp;&nbsp;Generate Web App</div>
               <div>&lt;/<span className="text-accent-blue font-mono">Button</span>&gt;</div>
             </div>
@@ -91,9 +91,9 @@ export default function Home() {
             </div>
             <div className="font-mono text-[10.5px] leading-relaxed text-zinc-300 flex flex-col gap-0.5">
               <div><span className="text-sky-400 font-mono">export const</span> config = &#123;</div>
-              <div>&nbsp;&nbsp;theme: <span className="text-emerald-400 font-mono">"cyber-dark"</span>,</div>
+              <div>&nbsp;&nbsp;theme: <span className="text-emerald-400 font-mono">&quot;cyber-dark&quot;</span>,</div>
               <div>&nbsp;&nbsp;grid: <span className="text-sky-400 font-mono">true</span>,</div>
-              <div>&nbsp;&nbsp;padding: <span className="text-emerald-400 font-mono">"24px"</span></div>
+              <div>&nbsp;&nbsp;padding: <span className="text-emerald-400 font-mono">&quot;24px&quot;</span></div>
               <div>&#125;;</div>
             </div>
           </div>
@@ -173,7 +173,7 @@ export default function Home() {
                   <Terminal className="h-3.5 w-3.5 text-accent-blue animate-terminal-pulse shrink-0" />
                   prompt agent
                 </span>
-                <p className="text-[12.5px] text-white leading-relaxed font-sans font-medium">"Create a dark dashboard analytics grid with server stats, active users chart, and a live sync latency indicator."</p>
+                <p className="text-[12.5px] text-white leading-relaxed font-sans font-medium">&quot;Create a dark dashboard analytics grid with server stats, active users chart, and a live sync latency indicator.&quot;</p>
               </div>
               <div className="bg-[#101010] border border-zinc-700/80 hover:border-zinc-600 rounded-xl p-4 flex flex-col justify-between transition-all min-h-[110px]">
                 <span className="text-[10px] uppercase font-bold text-zinc-300 flex items-center gap-1.5 select-none">
@@ -191,7 +191,7 @@ export default function Home() {
                   live synced code
                 </span>
                 <div className="text-[12px] font-mono text-white mt-4 block overflow-hidden truncate">
-                  <span className="text-sky-400 font-bold font-mono">import</span> &#123; Card &#125; <span className="text-sky-400 font-bold font-mono">from</span> <span className="text-emerald-400 font-semibold font-mono">'@/components/ui'</span>;
+                  <span className="text-sky-400 font-bold font-mono">import</span> &#123; Card &#125; <span className="text-sky-400 font-bold font-mono">from</span> <span className="text-emerald-400 font-semibold font-mono">&apos;@/components/ui&apos;</span>;
                 </div>
               </div>
             </div>

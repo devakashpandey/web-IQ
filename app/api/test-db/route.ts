@@ -23,11 +23,12 @@ export async function GET() {
       },
       dbUser,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const err = error as Error;
     return NextResponse.json({
       status: "Error",
-      message: error.message,
-      stack: error.stack,
+      message: err.message,
+      stack: err.stack,
     });
   }
 }

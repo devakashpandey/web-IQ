@@ -28,24 +28,27 @@ const Navbar = () => {
   const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const lenis = typeof window !== "undefined" ? (window as any).lenis : null;
+
     if (isSignInOpen || isSignUpOpen || isCreditsModalOpen) {
       document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
-      if (typeof window !== "undefined" && (window as any).lenis) {
-        (window as any).lenis.stop();
+      if (lenis?.stop) {
+        lenis.stop();
       }
     } else {
       document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
-      if (typeof window !== "undefined" && (window as any).lenis) {
-        (window as any).lenis.start();
+      if (lenis?.start) {
+        lenis.start();
       }
     }
     return () => {
       document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
-      if (typeof window !== "undefined" && (window as any).lenis) {
-        (window as any).lenis.start();
+      if (lenis?.start) {
+        lenis.start();
       }
     };
   }, [isSignInOpen, isSignUpOpen, isCreditsModalOpen]);

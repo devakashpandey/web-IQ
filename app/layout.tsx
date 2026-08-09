@@ -1,4 +1,5 @@
 import { ClerkProvider } from "@clerk/nextjs";
+import { ui } from "@clerk/ui";
 import { shadcn } from "@clerk/ui/themes";
 import type { Metadata } from "next";
 import { Geist, Inter } from "next/font/google";
@@ -32,7 +33,7 @@ export default function RootLayout({
       style={{ colorScheme: "dark" }}
     >
       <body className="bg-[#090909] text-white">
-        <ClerkProvider appearance={{ theme: shadcn }}>
+        <ClerkProvider ui={ui} appearance={{ theme: shadcn }}>
           <SmoothScrollProvider>{children}</SmoothScrollProvider>
         </ClerkProvider>
       </body>
