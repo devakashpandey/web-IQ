@@ -5,9 +5,10 @@ import { checkUser } from "@/lib/check_user";
 export async function getOrCreateUserAction() {
   try {
     const user = await checkUser();
-    return user;
+    return user || { credits: 10, plan: "free" };
   } catch (error) {
     console.error("Error in getOrCreateUserAction:", error);
-    return null;
+    return { credits: 10, plan: "free" };
   }
 }
+

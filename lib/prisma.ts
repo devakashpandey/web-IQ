@@ -5,8 +5,9 @@ import { PrismaClient } from "./generated/prisma/client";
 // Ye function database ke saath ek naya Prisma Client instance banata hai
 //aur use adapter ke zariye directly PostgreSQL se connect karta hai.
 function createPrismaClient() {
+    const dbUrl = process.env.DATABASE_URL!;
     const pool = new Pool({
-        connectionString: process.env.DATABASE_URL!,
+        connectionString: dbUrl,
         max: 10,
         idleTimeoutMillis: 30000,
         connectionTimeoutMillis: 5000,

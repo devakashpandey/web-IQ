@@ -3,29 +3,41 @@
 import { Plan } from "@/types/plans";
 import { currentUser, clerkClient } from "@clerk/nextjs/server";
 import { db } from "./prisma";
-import { PLANS } from "./constants";
+import { PLANS, PRICING_PLANS } from "./constants";
 
 export const checkUser = async () => {
     const user = await currentUser();
 
     if (!user) return null;
 
-    try {
-        let currentPlan: Plan = "free";
+    let currentPlan: Plan = "free";
 
-        try {
-            const client = await clerkClient();
-            const subscription = await client.billing.getUserBillingSubscription(user.id);
-            if (subscription && subscription.status === "active" && subscription.subscriptionItems?.[0]) {
-                const slug = subscription.subscriptionItems[0].plan?.slug;
-                if (slug && slug in PLANS) {
-                    currentPlan = slug as Plan;
+    try {
+        const client = await clerkClient();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const subscription = await (client as any).billing.getUserBillingSubscription(user.id);
+        if (subscription && (subscription.status === "active" || subscription.status === "trialing") && subscription.subscriptionItems?.[0]) {
+            const item = subscription.subscriptionItems[0];
+            const planSlug = item.plan?.slug?.toLowerCase();
+            const planName = item.plan?.name?.toLowerCase();
+            const planId = item.planId || item.plan?.id;
+
+            if (planSlug && planSlug in PLANS) {
+                currentPlan = planSlug as Plan;
+            } else if (planName && planName in PLANS) {
+                currentPlan = planName as Plan;
+            } else if (planId) {
+                const foundPlan = PRICING_PLANS.find((p) => p.planId === planId);
+                if (foundPlan && foundPlan.key in PLANS) {
+                    currentPlan = foundPlan.key as Plan;
                 }
             }
-        } catch (billingError) {
-            console.error("Error fetching billing subscription from Clerk:", billingError);
         }
+    } catch (billingError) {
+        console.error("Error fetching billing subscription from Clerk:", billingError);
+    }
 
+    try {
         const existUser = await db.user.findUnique({
             where: {
                 clerkId: user.id
@@ -60,9 +72,17 @@ export const checkUser = async () => {
                 credits: PLANS[currentPlan].credits,
             }
         });
-    } catch (error) {
-        console.error("Error in checkUser:", error);
-        return null;
+    } catch (dbError) {
+        console.error("Error connecting to database in checkUser, using fallback user state:", dbError);
+        return {
+            id: user.id,
+            clerkId: user.id,
+            email: user.emailAddresses[0]?.emailAddress || "",
+            name: `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim() || "User",
+            imgUrl: user.imageUrl || "",
+            plan: currentPlan,
+            credits: PLANS[currentPlan].credits,
+        };
     }
 };
 
