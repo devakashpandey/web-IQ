@@ -2,13 +2,21 @@
 
 import React, { useEffect } from "react";
 import Lenis from "lenis";
+import { usePathname } from "next/navigation";
 
 export default function SmoothScrollProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
   useEffect(() => {
+    // Disable Lenis on the workspace route so code editors, previews, and chat panels scroll natively with mouse wheel
+    if (pathname?.startsWith("/workspace")) {
+      return;
+    }
+
     // Initialize Lenis
     const lenis = new Lenis({
       duration: 1.2,
@@ -16,6 +24,7 @@ export default function SmoothScrollProvider({
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
+      prevent: (node) => node.closest("[data-lenis-prevent]") !== null,
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -60,7 +69,7 @@ export default function SmoothScrollProvider({
       cancelAnimationFrame(rafId);
       document.removeEventListener("click", handleAnchorClick);
     };
-  }, []);
+  }, [pathname]);
 
   return <>{children}</>;
 }

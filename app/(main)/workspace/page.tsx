@@ -3,7 +3,7 @@ import { Loader2 } from "lucide-react";
 import WorkspaceClient from "@/components/WorkspaceClient";
 
 interface WorkspaceProps {
-  searchParams: Promise<{ prompt?: string; id?: string }>
+  searchParams: Promise<{ prompt?: string; id?: string }>;
 }
 
 async function WorkspaceContent({ searchParams }: WorkspaceProps) {
